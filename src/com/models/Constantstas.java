@@ -14,8 +14,5 @@ public interface Constantstas {
 	public static String API_LOGIN = "login";
 	public static String API_DAFTAR = "register";
 	public static String API_LOGOUT = "logout";
-	public static String API_METADATA = "metadata";
-	public static String API_BULK_ABSENSI = "insert_bulk_absensi";
-	
-	public static String API_UPDATE_GURU = "update_guru";
+	public static String API_LIST_LAPORAN = "list_laporan";
 }
