@@ -5,7 +5,7 @@ import java.util.Observable;
 public class DataSingleton extends Observable {
 	private static DataSingleton instance;
 	
-	private String serverAddress="192.168.1.8";
+	private String serverAddress="192.168.1.8:9000";
 	
 	public String getServerAddress() {
 		return serverAddress;

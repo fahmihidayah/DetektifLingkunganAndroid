@@ -37,7 +37,7 @@ public class LoginActivity extends Activity implements Constantstas{
 	}
 	
 	public void onClickDaftar(View view){
-		
+		startActivity(new Intent(this, DaftarActivity.class));
 	}
 	
 //	@Override

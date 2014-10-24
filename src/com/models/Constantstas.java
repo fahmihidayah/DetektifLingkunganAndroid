@@ -12,6 +12,7 @@ public interface Constantstas {
 	public static String LIST_MAPEL_DATA = "LIST_MAPEL_DATA.dat";
 	
 	public static String API_LOGIN = "login";
+	public static String API_DAFTAR = "register";
 	public static String API_LOGOUT = "logout";
 	public static String API_METADATA = "metadata";
 	public static String API_BULK_ABSENSI = "insert_bulk_absensi";

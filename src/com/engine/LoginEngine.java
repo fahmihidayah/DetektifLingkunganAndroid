@@ -30,17 +30,15 @@ public class LoginEngine implements Constantstas{
 		MyRestClient.post(API_LOGIN, params, new JsonHttpResponseHandler(){
 			
 			@Override
-			public void onSuccess(int statusCode, Header[] headers,
-					JSONObject response) {
-				User user = new Gson().fromJson(response.toString(), User.class);
+			public void onSuccess(JSONObject response) {
+				//User user = new Gson().fromJson(response.toString(), User.class);
 				Toast.makeText(loginActivity, "user login", Toast.LENGTH_LONG).show();
 			}
 			
 			@Override
-			public void onFailure(int statusCode, Header[] headers,
-					Throwable throwable, JSONObject errorResponse) {
-				StringResponse stringResponse = new Gson().fromJson(errorResponse.toString(), StringResponse.class);
-				Toast.makeText(loginActivity, stringResponse.getData(), Toast.LENGTH_LONG).show();
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				//StringResponse stringResponse = new Gson().fromJson(errorResponse.toString(), StringResponse.class);
+				Toast.makeText(loginActivity,"error", Toast.LENGTH_LONG).show();
 			}
 		});
 	}
