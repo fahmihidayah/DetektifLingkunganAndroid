@@ -10,7 +10,7 @@ public class MyRestClient {
 	  //private static final String BASE_URL = "http://localhost/my_chat/";
 //	private static final String BASE_URL = "http://192.168.1.6/ip_url/";
 	private static final String HEADER = "http://";
-	private static final String PATH = "/api/test/";
+	private static final String PATH = "/api/";
 	
 	
 	  private static AsyncHttpClient client = new AsyncHttpClient();

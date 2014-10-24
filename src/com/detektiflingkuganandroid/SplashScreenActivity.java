@@ -19,7 +19,7 @@ public class SplashScreenActivity extends Activity implements Constantstas{
 
 			@Override
 			public void run() {
-				
+				startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
 			}
 		}, DELAYED_SPLASH_SCREEN_TIME);
 
