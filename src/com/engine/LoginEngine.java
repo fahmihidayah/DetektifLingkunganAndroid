@@ -3,15 +3,19 @@ package com.engine;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.detektiflingkuganandroid.LoginActivity;
+import com.detektiflingkuganandroid.MainActivity;
 import com.framework.rest_clients.MyRestClient;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.models.Constantstas;
+import com.models.DataSingleton;
 import com.models.User;
+import com.response.LoginResponse;
 import com.response.StringResponse;
 
 public class LoginEngine implements Constantstas{
@@ -31,8 +35,14 @@ public class LoginEngine implements Constantstas{
 			
 			@Override
 			public void onSuccess(JSONObject response) {
-				//User user = new Gson().fromJson(response.toString(), User.class);
-				Toast.makeText(loginActivity, "user login", Toast.LENGTH_LONG).show();
+				LoginResponse loginResponse = new Gson().fromJson(response.toString(), LoginResponse.class);
+				DataSingleton.getInstance().setUser(loginResponse.getData().getUser());
+				Toast.makeText(loginActivity, "user id " + DataSingleton.getInstance().getUser().getId(), Toast.LENGTH_LONG).show();
+				DataSingleton.getInstance().setLogin(true);
+				DataSingleton.getInstance().setAuthKey(loginResponse.getData().getAuthKey());
+				DataSingleton.getInstance().saveToFile(loginActivity);
+				loginActivity.startActivity(new Intent(loginActivity, MainActivity.class));
+				loginActivity.finish();
 			}
 			
 			@Override
@@ -42,5 +52,7 @@ public class LoginEngine implements Constantstas{
 			}
 		});
 	}
+	
+	
 
 }

@@ -14,8 +14,8 @@ import java.util.List;
       "userName": "f",
       "password": "f",
       "type": "PEMANTAU",
-      "name": "fahmi",
-      "email": "fahmi@rembugan.com",
+      "name": "fahmi",       
+       "email": "fahmi@rembugan.com",
       "status": "i'm a detective"
     }
   }

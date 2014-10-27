@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
-public class SplashScreenActivity extends Activity implements Constantstas{
+public class SplashScreenActivity extends FragmentActivity implements Constantstas{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +20,14 @@ public class SplashScreenActivity extends Activity implements Constantstas{
 
 			@Override
 			public void run() {
-				startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+				DataSingleton.getInstance().loadFromFile(SplashScreenActivity.this);
+				if(DataSingleton.getInstance().isLogin()){
+					startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));					
+				}
+				else {
+					startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+				} 
+				finish();
 			}
 		}, DELAYED_SPLASH_SCREEN_TIME);
 
