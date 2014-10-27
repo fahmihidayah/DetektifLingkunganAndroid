@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.detektiflingkuganandroid.DetailLaporanActivity;
 import com.detektiflingkuganandroid.LoginActivity;
 import com.detektiflingkuganandroid.MainActivity;
 import com.framework.rest_clients.MyRestClient;
@@ -95,15 +96,29 @@ public class MainEngine implements Constantstas {
 		RequestParams params = new RequestParams();
 		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
 		params.put("idLaporan", data.getId() + "");
-		String apiPantau = data.isPantau() ? API_UNPANTAU : API_PANTAU;
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		String apiPantau = API_PANTAU;
+		if(data.isPantau()){
+			apiPantau = API_UNPANTAU;
+		}
 		MyRestClient.post(apiPantau, params, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(JSONObject response) {
-				data.setPantau(data.isPantau() ? false : true);
+				data.setPantau(data.isPantau() ? false: true);
 				DataSingleton.getInstance().saveToFile(mainActivity);
 				mainActivity.customAdapter.notifyDataSetChanged();
 				Toast.makeText(mainActivity, "pantau", Toast.LENGTH_LONG).show();
 			}
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				Toast.makeText(mainActivity, "error", Toast.LENGTH_LONG).show();
+			}
 		});
+	}
+	
+	public void showDetailLaporan(Laporan data){
+		Intent intent = new Intent(mainActivity, DetailLaporanActivity.class);
+		intent.putExtra("laporan", data);
+		mainActivity.startActivity(intent);
 	}
 }

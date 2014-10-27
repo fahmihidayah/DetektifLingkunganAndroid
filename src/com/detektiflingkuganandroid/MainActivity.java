@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -69,10 +71,18 @@ public class MainActivity extends FragmentActivity implements Constantstas, OnRe
 						}						
 					});
 				
-				
+				ViewSetterUtilities.getImageButton(view, R.id.imageButtonComment)
+					.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							mainEngine.showDetailLaporan(data);
+						}
+					});
 			}
 		};
 		listViewLaporan.setAdapter(customAdapter);
+		
 		listViewLaporan.setOnScrollListener(new AbsListView.OnScrollListener() {
 			private int preLast;
 			@Override

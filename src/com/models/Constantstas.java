@@ -23,5 +23,6 @@ public interface Constantstas {
 	public static String API_LIST_LAPORAN = "get_list_laporan";
 	public static String API_PANTAU = "pantau";
 	public static String API_UNPANTAU = "unpantau";
+	public static String API_LIST_KOMENTAR = "list_komentar";
 	
 }
