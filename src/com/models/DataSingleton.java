@@ -97,6 +97,7 @@ public class DataSingleton extends Observable implements Constantstas{
 		authKey = FileHandler.getStringValue(context, AUTH_KEY);
 		try {
 			user = (User) FileHandler.loadDataFromFile(context, USER_DATA);
+			listDataLaporan = (ArrayList<Laporan>) FileHandler.loadDataFromFile(context, LIST_LAPORAN);
 		} catch (StreamCorruptedException e) {
 			
 		} catch (FileNotFoundException e) {

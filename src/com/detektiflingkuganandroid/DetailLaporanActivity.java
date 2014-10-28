@@ -14,12 +14,18 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class DetailLaporanActivity extends FragmentActivity implements Constantstas{
 
 	public ListView listViewKomentar;
 	public CustomAdapter<Komentar> customAdapter;
+	public EditText editTextComment;
+	public ImageButton imageButtonComment;
 	private DetailLaporanEngine detailLaporanEngine;
 	
 	private void initialComponent(){
@@ -34,6 +40,16 @@ public class DetailLaporanActivity extends FragmentActivity implements Constants
 			}
 		};
 		listViewKomentar.setAdapter(customAdapter);
+		listViewKomentar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				detailLaporanEngine.showFriendProfile(arg2);
+			}
+		});
+		imageButtonComment = (ImageButton) findViewById(R.id.imageButtonComment);
+		editTextComment = (EditText) findViewById(R.id.editTextComment);
 	}
 	
 	@Override
@@ -44,11 +60,15 @@ public class DetailLaporanActivity extends FragmentActivity implements Constants
 		detailLaporanEngine.requestListKomentar();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public void onClickComment(View view){
+		detailLaporanEngine.comment(editTextComment.getText().toString());
 	}
+	
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+//	}
 
 }

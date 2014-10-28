@@ -79,6 +79,8 @@ public class MainEngine implements Constantstas {
 			public void onSuccess(JSONObject response) {
 				Toast.makeText(mainActivity,"logout", Toast.LENGTH_LONG).show();
 				DataSingleton.getInstance().setAuthKey("");
+				DataSingleton.getInstance().getListDataLaporan().clear();
+				DataSingleton.getInstance().setUser(null);
 				DataSingleton.getInstance().setLogin(false);
 				DataSingleton.getInstance().saveToFile(mainActivity);
 				mainActivity.startActivity(new Intent(mainActivity, LoginActivity.class));

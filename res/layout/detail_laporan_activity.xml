@@ -12,8 +12,32 @@
         android:id="@+id/listViewKomentar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/editTextComment"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
+
     </ListView>
+
+    <EditText
+        android:id="@+id/editTextComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/imageButtonSend"
+        android:ems="10"
+        android:maxLines="3" >
+
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/imageButtonSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/listViewKomentar"
+        android:layout_below="@+id/listViewKomentar"
+        android:src="@drawable/ic_action" 
+        android:onClick="onClickComment"/>
 
 </RelativeLayout>

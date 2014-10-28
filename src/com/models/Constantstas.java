@@ -17,6 +17,7 @@ public interface Constantstas {
 	public static String IS_LOGIN = "IS_LOGIN";
 	public static String USER_DATA = "USER_DATA.DAT";
 	public static String LIST_LAPORAN = "LIST_LAPORAN.DAT";
+	
 	public static String API_LOGIN = "login";
 	public static String API_DAFTAR = "register";
 	public static String API_LOGOUT = "logout";
@@ -24,5 +25,11 @@ public interface Constantstas {
 	public static String API_PANTAU = "pantau";
 	public static String API_UNPANTAU = "unpantau";
 	public static String API_LIST_KOMENTAR = "list_komentar";
+	public static String API_INSERT_KOMENTAR = "insert_komentar";
+	public static String API_USER_DETAIL = "user_detail";
+	public static String API_FOLLOW = "follow";
+	public static String API_UNFOLLOW = "unfollow";
+	public static String API_UPDATE_STATUS = "update_status";
+	
 	
 }

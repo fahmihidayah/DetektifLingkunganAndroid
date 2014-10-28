@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
+import android.widget.Toast;
+
 import com.detektiflingkuganandroid.DetailLaporanActivity;
+import com.detektiflingkuganandroid.DetailUserProfileActivity;
 import com.framework.rest_clients.MyRestClient;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -13,6 +17,8 @@ import com.models.Constantstas;
 import com.models.DataSingleton;
 import com.models.Komentar;
 import com.models.Laporan;
+import com.models.User;
+import com.response.KomentarResponse;
 import com.response.ListKomentarResponse;
 
 public class DetailLaporanEngine implements Constantstas{
@@ -43,6 +49,37 @@ public class DetailLaporanEngine implements Constantstas{
 	
 	public ArrayList<Komentar> getListKomentar() {
 		return listKomentar;
+	}
+	
+	public void comment(String comment){
+		RequestParams params = new RequestParams();
+		params.put("idLaporan", laporan.getId() + "");
+		params.put("dataKomentar", comment);
+		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		MyRestClient.post(API_INSERT_KOMENTAR, params, new JsonHttpResponseHandler(){
+			@Override
+			public void onSuccess(JSONObject response) {
+				KomentarResponse komentarResponse = new Gson().fromJson(response.toString(), KomentarResponse.class);
+				listKomentar.add(komentarResponse.getData());
+				detailLaporanActivity.customAdapter.notifyDataSetChanged();
+			}
+			
+		});
+	}
+	
+	public void showFriendProfile(int idxKomentar){
+		User user = listKomentar.get(idxKomentar).getUser();
+		Intent intent= new Intent(detailLaporanActivity, DetailUserProfileActivity.class);
+		if(user.getId().equals(DataSingleton.getInstance().getUser().getId())){
+			intent.putExtra("own_profile", true);
+		}
+		else {
+			intent.putExtra("own_profile", false);
+		}
+		intent.putExtra("user", user);
+		detailLaporanActivity.startActivity(intent);
+		
 	}
 	
 	

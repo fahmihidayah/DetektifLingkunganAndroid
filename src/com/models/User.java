@@ -29,6 +29,9 @@ public class User implements Serializable{
 	private String name;
 	private String email;
 	private String status;
+	private Integer jumlahFollowerUser = 0;
+	private Integer jumlahFollowingUser = 0;
+	private Boolean isFollowing;
 	public Long getId() {
 		return id;
 	}
@@ -71,4 +74,23 @@ public class User implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public Integer getJumlahFollowerUser() {
+		return jumlahFollowerUser;
+	}
+	public void setJumlahFollowerUser(Integer jumlahFollowerUser) {
+		this.jumlahFollowerUser = jumlahFollowerUser;
+	}
+	public Integer getJumlahFollowingUser() {
+		return jumlahFollowingUser;
+	}
+	public void setJumlahFollowingUser(Integer jumlahFollowingUser) {
+		this.jumlahFollowingUser = jumlahFollowingUser;
+	}
+	public Boolean getIsFollowing() {
+		return isFollowing;
+	}
+	public void setIsFollowing(Boolean isFollowing) {
+		this.isFollowing = isFollowing;
+	}
+	
 }
