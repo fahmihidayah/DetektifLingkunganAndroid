@@ -1,0 +1,14 @@
+<resources>
+
+    <color name="red_act">#FF3333</color>
+    <color name="red_pas">#CC1414</color>
+	<color name="red_edge">#660A0A</color>
+	<color name="grey_act">#AAA</color>
+	<color name="grey_pas">#EEE</color>
+	<color name="grey_text">#666</color>
+	<color name="white">#FFFFFF</color>
+	<color name="green_action_bar">#00E6E6</color>
+	<color name="green_action_bar_act">#99F5F5</color>
+	<color name="dark_menu">#555</color>
+	
+</resources>

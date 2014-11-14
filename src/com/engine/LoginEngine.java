@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.detektiflingkuganandroid.HomeActivity;
 import com.detektiflingkuganandroid.LoginActivity;
 import com.detektiflingkuganandroid.MainActivity;
 import com.framework.rest_clients.MyRestClient;
@@ -41,7 +42,7 @@ public class LoginEngine implements Constantstas{
 				DataSingleton.getInstance().setLogin(true);
 				DataSingleton.getInstance().setAuthKey(loginResponse.getData().getAuthKey());
 				DataSingleton.getInstance().saveToFile(loginActivity);
-				loginActivity.startActivity(new Intent(loginActivity, MainActivity.class));
+				loginActivity.startActivity(new Intent(loginActivity, HomeActivity.class));
 				loginActivity.finish();
 			}
 			

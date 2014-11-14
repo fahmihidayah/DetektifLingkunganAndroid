@@ -14,6 +14,9 @@ public interface Constantstas {
 	public static String SHARED_PREFERENCE_FILE = "SH_F";
 	public static int MODE = Activity.MODE_PRIVATE;
 	
+	public static String MODE_FOLLOWER = "follower";
+	public static String MODE_FOLLOWING = "following";
+	
 	public static String IS_LOGIN = "IS_LOGIN";
 	public static String USER_DATA = "USER_DATA.DAT";
 	public static String LIST_LAPORAN = "LIST_LAPORAN.DAT";
@@ -30,6 +33,8 @@ public interface Constantstas {
 	public static String API_FOLLOW = "follow";
 	public static String API_UNFOLLOW = "unfollow";
 	public static String API_UPDATE_STATUS = "update_status";
+	public static String API_INSERT_LAPORAN = "insert_laporan";
+	public static String API_GET_FOLLOWER = "get_follower";
 	
 	
 }

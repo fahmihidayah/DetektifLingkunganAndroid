@@ -15,14 +15,14 @@ public class SplashScreenActivity extends FragmentActivity implements Constantst
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.splash_screen_activity);
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 				DataSingleton.getInstance().loadFromFile(SplashScreenActivity.this);
 				if(DataSingleton.getInstance().isLogin()){
-					startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));					
+					startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));					
 				}
 				else {
 					startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));

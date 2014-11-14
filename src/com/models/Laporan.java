@@ -1,6 +1,7 @@
 package com.models;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Calendar;
 /*
  {
@@ -65,6 +66,8 @@ public class Laporan  implements Serializable{
 	private Double longitude;
 	private Double latitude;
 	private String time;
+	private ImagePath imagePath;
+	private Integer viwer;
 	
 	private boolean pantau;
 	
@@ -134,4 +137,18 @@ public class Laporan  implements Serializable{
 	public void setPantau(boolean pantau) {
 		this.pantau = pantau;
 	}
+	public ImagePath getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(ImagePath imagePath) {
+		this.imagePath = imagePath;
+	}
+	public Integer getViewer() {
+		return viwer;
+	}
+	public void setViewer(Integer viwer) {
+		this.viwer = viwer;
+	}
+	
+	
 }

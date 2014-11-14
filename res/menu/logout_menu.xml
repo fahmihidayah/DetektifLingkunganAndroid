@@ -1,9 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/lapor"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_lapor">
+    </item>
+    <item
+        android:id="@+id/profile"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_profile">
+    </item>
+    <item
         android:id="@+id/logout"
         android:orderInCategory="100"
-        android:showAsAction="always"
-        android:title="@string/logout"/>
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_logout">
+    </item>
 
 </menu>

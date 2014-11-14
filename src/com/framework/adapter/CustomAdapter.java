@@ -23,8 +23,13 @@ public abstract class CustomAdapter<T> extends BaseAdapter{
 		this.contextMain = context;
 		this.resourceId = textViewResourceId;
 		this.listData = listData;
+		initialComponent();
 	}
 
+	public void initialComponent(){
+		
+	}
+		
 	@Override
 	public int getCount() {
 		return listData.size();
@@ -37,13 +42,12 @@ public abstract class CustomAdapter<T> extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = getLayoutInflater();
-//		if(convertView == null){
-			View customView = inflater.inflate(resourceId, null);
-			setViewItems(customView, listData.get(position));
-			convertView = customView;
-//		}
 		
+		if(convertView == null){
+			LayoutInflater inflater = getLayoutInflater();
+			convertView = inflater.inflate(resourceId, null);
+		}
+		setViewItems(convertView, listData.get(position));
 		return convertView;
 	}
 

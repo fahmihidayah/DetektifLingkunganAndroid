@@ -10,29 +10,57 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SplashScreenActivity" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imageViewProfile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_profile" />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+			android:textColor="#FF0000"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textViewDataLaporan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="#FF0000" />
 
     <ImageView
         android:id="@+id/imageViewImageLaporan"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_launcher" />
+        android:layout_height="200dp"
+        android:src="@drawable/ic_unknown_image" />
 
     <TextView
         android:id="@+id/textViewTanggapan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/imageViewImageLaporan"
+        android:id="@+id/imageViewImageTanggapan"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textViewKeterangan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#FF0000" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -48,20 +76,36 @@
                 android:id="@+id/imageButtonPantau"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/unpantau" />
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="#444"
+                android:src="@drawable/ic_pantau_passive" />
 
             <ImageButton
                 android:id="@+id/imageButtonComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/comment" />
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="#444"
+                android:src="@drawable/ic_comment" />
 
             <ImageButton
                 android:id="@+id/imageButtonLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/map" />
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="#444"
+                android:src="@drawable/ic_location" />
         </TableRow>
     </TableLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="#333" />
 
 </LinearLayout>

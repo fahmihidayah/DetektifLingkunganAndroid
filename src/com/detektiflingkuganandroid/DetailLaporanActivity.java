@@ -35,8 +35,10 @@ public class DetailLaporanActivity extends FragmentActivity implements Constants
 			
 			@Override
 			public void setViewItems(View view, Komentar data) {
+				new ImageDownloader(ViewSetterUtilities.getImageView(view, R.id.imageViewProfile)).execute(data.getUser().getImageProfilePath().getUrlImange());
 				ViewSetterUtilities.setTextToView(view, R.id.textViewUserKomentar, data.getUser().getName());
 				ViewSetterUtilities.setTextToView(view, R.id.textViewKomentarUser, data.getDataKomentar());
+				
 			}
 		};
 		listViewKomentar.setAdapter(customAdapter);

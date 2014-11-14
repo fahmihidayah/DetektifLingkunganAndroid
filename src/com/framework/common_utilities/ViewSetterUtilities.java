@@ -26,6 +26,10 @@ public class ViewSetterUtilities {
 		return(ImageButton) rootView.findViewById(resource);
 	}
 	
+	public static ImageView getImageView(View rootView, int resource){
+		return (ImageView) rootView.findViewById(resource);
+	}
+	
 	public static String getStringDate(Date date, String format){
 		SimpleDateFormat formater = new SimpleDateFormat(format);
 		return formater.format(date);

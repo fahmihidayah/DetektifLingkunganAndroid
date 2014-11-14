@@ -8,10 +8,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SplashScreenActivity" >
+    tools:context=".SplashScreenActivity">
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageViewProfile"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_weight="0.20"
@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Large Text"
+        android:textColor="#FF0000" 
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <View
@@ -37,21 +38,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="#FF0000"  />
 
     <ImageButton
         android:id="@+id/imageButtonEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:src="@drawable/ic_pencil"
-        android:onClick="onClickEditStatus" />
+        android:onClick="onClickEditStatus"
+        android:background="#444" />
 
     <TextView
         android:id="@+id/textViewFollowerAndFollowing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="#FF0000"  />
 
     <Button
         android:id="@+id/buttonFollow"
@@ -59,6 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="76dp"
         android:text="Follow"
-        android:onClick="onClickFollow" />
+        android:onClick="onClickFollow"
+        android:background="#444"
+        android:textColor="#FF0000" />
 
 </LinearLayout>

@@ -32,6 +32,7 @@ public class User implements Serializable{
 	private Integer jumlahFollowerUser = 0;
 	private Integer jumlahFollowingUser = 0;
 	private Boolean isFollowing;
+	private ImagePath imageProfilePath;
 	public Long getId() {
 		return id;
 	}
@@ -92,5 +93,12 @@ public class User implements Serializable{
 	public void setIsFollowing(Boolean isFollowing) {
 		this.isFollowing = isFollowing;
 	}
+	public ImagePath getImageProfilePath() {
+		return imageProfilePath;
+	}
+	public void setImageProfilePath(ImagePath imageProfilePath) {
+		this.imageProfilePath = imageProfilePath;
+	}
+	
 	
 }

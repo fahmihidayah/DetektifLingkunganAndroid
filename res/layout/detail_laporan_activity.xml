@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/editTextComment"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp">
 
     </ListView>
 
@@ -26,6 +27,7 @@
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/imageButtonSend"
         android:ems="10"
+        android:textColor="#FF0000"
         android:maxLines="3" >
 
         <requestFocus />
@@ -37,7 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/listViewKomentar"
         android:layout_below="@+id/listViewKomentar"
-        android:src="@drawable/ic_action" 
+        android:src="@drawable/ic_send"
+        android:background="#444"
         android:onClick="onClickComment"/>
 
 </RelativeLayout>

@@ -14,11 +14,11 @@ import com.framework.file_handler.FileHandler;
 public class DataSingleton extends Observable implements Constantstas{
 	private static DataSingleton instance;
 
-	private String serverAddress = "192.168.1.10:9000";
+	private String serverAddress = "192.168.1.6:9000";
 	private String authKey = "";
 	private boolean isLogin = false;
 	private User user = null;
-	private List<Laporan> listDataLaporan = new ArrayList<Laporan>();
+	private List<LaporanHelper> listDataLaporan = new ArrayList<LaporanHelper>();
 
 	
 	public String getAuthKey() {
@@ -53,11 +53,11 @@ public class DataSingleton extends Observable implements Constantstas{
 		this.serverAddress = serverAddress;
 	}
 
-	public List<Laporan> getListDataLaporan() {
+	public List<LaporanHelper> getListDataLaporan() {
 		return listDataLaporan;
 	}
 
-	public void setListDataLaporan(List<Laporan> listDataLaporan) {
+	public void setListDataLaporan(List<LaporanHelper> listDataLaporan) {
 		this.listDataLaporan = listDataLaporan;
 	}
 
@@ -83,7 +83,7 @@ public class DataSingleton extends Observable implements Constantstas{
 		FileHandler.putStringValue(context, AUTH_KEY, authKey);
 		try {
 			FileHandler.saveDataToFile(context, USER_DATA, Context.MODE_PRIVATE, user);
-			FileHandler.saveDataToFile(context, LIST_LAPORAN, Context.MODE_PRIVATE, (ArrayList<Laporan>) listDataLaporan);
+//			FileHandler.saveDataToFile(context, LIST_LAPORAN, Context.MODE_PRIVATE, (ArrayList<Laporan>) listDataLaporan);
 		} catch (FileNotFoundException e) {
 			
 		} catch (IOException e) {
@@ -93,11 +93,11 @@ public class DataSingleton extends Observable implements Constantstas{
 	
 	public void loadFromFile(Context context){
 		isLogin = FileHandler.getBooleanValue(context, IS_LOGIN);
-		serverAddress = FileHandler.getStringValue(context, SERVER_ADDRESS);
+		//serverAddress = FileHandler.getStringValue(context, SERVER_ADDRESS);
 		authKey = FileHandler.getStringValue(context, AUTH_KEY);
 		try {
 			user = (User) FileHandler.loadDataFromFile(context, USER_DATA);
-			listDataLaporan = (ArrayList<Laporan>) FileHandler.loadDataFromFile(context, LIST_LAPORAN);
+//			listDataLaporan = (ArrayList<Laporan>) FileHandler.loadDataFromFile(context, LIST_LAPORAN);
 		} catch (StreamCorruptedException e) {
 			
 		} catch (FileNotFoundException e) {

@@ -3,6 +3,7 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_login"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -10,40 +11,97 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SplashScreenActivity" >
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_text_login"
+        android:layout_marginTop="50dp" />
+
     <EditText
         android:id="@+id/editTextUserName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" 
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_corner_white"
+        android:ems="10"
         android:hint="user name"
-        android:layout_marginTop="50dp">
+        android:paddingLeft="10dp"
+        android:textColor="#333" >
 
         <requestFocus />
     </EditText>
 
-    <EditText
-        android:id="@+id/editTextPassword"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword" 
-        android:hint="password"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_corner_black" >
+
+        <Button
+            android:id="@+id/buttonForgotPassword"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/editTextPassword"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/round_button_red" 
+            android:text="Forgot"
+            android:textColor="@color/white"
+            />
+			
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@+id/buttonForgotPassword"
+            android:background="@drawable/round_corner_black"
+            android:ems="10"
+            android:hint="password"
+            android:inputType="textPassword" 
+            android:textColor="@color/white"/>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:onClick="onClickLogin" />
+        android:background="@drawable/round_button_red"
+        android:onClick="onClickLogin"
+        android:text="Login"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/buttonDaftar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
+        android:background="@drawable/round_button_red"
+        android:onClick="onClickDaftar"
         android:text="Daftar"
-        android:onClick="onClickDaftar" />
+        android:textColor="@color/white" 
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textViewDaftar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Don't have account?"
+        android:gravity="center_horizontal"
+        android:textColor="#8F0000" />
+
+    <TextView
+        android:id="@+id/textViewAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="What is DL?"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:textColor="#8F0000"  />
 
 </LinearLayout>

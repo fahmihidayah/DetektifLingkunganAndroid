@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SplashScreenActivity" >
+    tools:context=".SplashScreenActivity" 
+    android:background="#DDD">
 
     <EditText
         android:id="@+id/editTextServerStatus"
@@ -17,7 +18,8 @@
         android:layout_alignParentTop="true"
         android:ems="10"
         android:hint="status"
-        android:text="" >
+        android:text=""
+        android:textColor="#FF0000"  >
 
     </EditText>
 
