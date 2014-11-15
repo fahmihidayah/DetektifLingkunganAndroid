@@ -16,7 +16,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="Detail Laporan"
+        android:text="Laporan"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold" />
