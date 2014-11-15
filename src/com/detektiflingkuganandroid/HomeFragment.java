@@ -19,10 +19,10 @@ public class HomeFragment extends Fragment {
 	private View rootView;
 
 	private void initialComponent() {
-		buttonLaporan = (Button) rootView.findViewById(R.id.buttonLaporan);
+		buttonLaporan = (Button) rootView.findViewById(R.id.buttonHome);
 		buttonMap = (Button) rootView.findViewById(R.id.buttonMap);
 		buttonConversation = (Button) rootView
-				.findViewById(R.id.buttonConversation);
+				.findViewById(R.id.buttonDiscover);
 
 		View customActionBar = getActivity().getLayoutInflater().inflate(R.layout.custom_home_action_bar, null);
         getActivity().getActionBar().setDisplayShowHomeEnabled(false);
@@ -74,6 +74,12 @@ public class HomeFragment extends Fragment {
 				buttonConversation.setBackgroundResource(R.color.red_act);
 			}
 		});
+		
+		MainFragment mainFragment = new MainFragment();
+		changeFragment(mainFragment);
+		buttonLaporan.setBackgroundResource(R.color.red_act);
+		buttonMap.setBackgroundResource(R.color.dark_menu);
+		buttonConversation.setBackgroundResource(R.color.dark_menu);
 
 	}
 

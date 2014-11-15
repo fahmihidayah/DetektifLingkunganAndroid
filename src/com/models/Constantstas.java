@@ -35,6 +35,6 @@ public interface Constantstas {
 	public static String API_UPDATE_STATUS = "update_status";
 	public static String API_INSERT_LAPORAN = "insert_laporan";
 	public static String API_GET_FOLLOWER = "get_follower";
-	
+	public static String API_VIEW = "view";
 	
 }

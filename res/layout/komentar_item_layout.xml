@@ -8,8 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SplashScreenActivity"
-    android:background="#AAA" >
+    tools:context=".SplashScreenActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,7 @@
             android:id="@+id/textViewUserKomentar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" 
-            android:textColor="#FF0000" />
+            android:text="TextView" />
 
     </LinearLayout>
 
@@ -34,7 +32,6 @@
         android:id="@+id/textViewKomentarUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="#FF0000"  />
+        android:text="TextView"  />
 
 </LinearLayout>

@@ -29,7 +29,7 @@ public class DetailLaporanActivity extends FragmentActivity implements Constants
 	private DetailLaporanEngine detailLaporanEngine;
 	
 	private void initialComponent(){
-		detailLaporanEngine = new DetailLaporanEngine(this);
+//		detailLaporanEngine = new DetailLaporanEngine(this);
 		listViewKomentar = (ListView) findViewById(R.id.listViewKomentar);
 		customAdapter = new CustomAdapter<Komentar>(this, R.layout.komentar_item_layout, detailLaporanEngine.getListKomentar()) {
 			

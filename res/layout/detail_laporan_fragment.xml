@@ -85,30 +85,32 @@
         <Button
             android:id="@+id/buttonComment"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="35dp"
             android:layout_alignRight="@+id/editTextComment"
             android:layout_below="@+id/editTextComment"
-            android:background="@drawable/round_button_green_sea"
+            android:background="@drawable/round_button_green_dark"
             android:text="Comment"
             android:textColor="@color/white"
-            android:textSize="10dp" />
+            android:textSize="13dp" />
 
         <Button
             android:id="@+id/buttonPantau"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="35dp"
             android:layout_below="@+id/editTextComment"
             android:layout_toLeftOf="@+id/buttonComment"
-            android:background="@drawable/round_button_green_sea"
+            android:background="@drawable/round_button_green_dark"
             android:text="Pantau"
             android:textColor="@color/white"
-            android:textSize="10dp"
-            android:layout_marginRight="10dp" />
+            android:textSize="13dp"
+            android:layout_marginRight="10dp" 
+            android:drawableLeft="@drawable/ic_centang"
+            android:padding="3dp"/>
 
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/listViewComment"
+        android:id="@+id/listViewKomentar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/relativeLayout1"

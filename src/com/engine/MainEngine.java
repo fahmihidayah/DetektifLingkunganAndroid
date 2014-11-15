@@ -56,6 +56,7 @@ public class MainEngine implements Constantstas {
 					@Override
 					public void onSuccess(JSONObject response) {
 						ListLaporanResponse listLaporanResponse = new Gson().fromJson(response.toString(), ListLaporanResponse.class);
+						listLaporan.clear();
 						listLaporan.addAll(listLaporanResponse.getData());
 						Toast.makeText(mainActivity.getActivity(), "Data updated " + listLaporanResponse.getData().size(), Toast.LENGTH_LONG).show();
 						mainActivity.mSwipeRefreshLayout.setRefreshing(false);

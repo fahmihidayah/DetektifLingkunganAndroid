@@ -10,5 +10,8 @@
 	<color name="green_action_bar">#00E6E6</color>
 	<color name="green_action_bar_act">#99F5F5</color>
 	<color name="dark_menu">#555</color>
+	<color name="green_button_pas">#008F00</color>
+	<color name="green_button_act">#4DB14D</color>
+	
 	
 </resources>

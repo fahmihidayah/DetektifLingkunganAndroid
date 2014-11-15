@@ -1,5 +1,6 @@
 package com.detektiflingkuganandroid;
 
+import com.engine.DetailLaporanEngine;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
 import com.models.Komentar;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,8 +31,11 @@ public class DetailLaporanFragment extends Fragment {
 	public ListView listViewKomentar;
 	public Button buttonComment, buttonPantau;
 	public CustomAdapter<Komentar> customAdapter;
+	public EditText editTextComment;
 	public View rootView;
 	public LaporanHelper laporan;
+	
+	public DetailLaporanEngine detailLaporanEngine;
 
 	DisplayImageOptions displayImageOptionsProfile, displayImageOptionsLaporan;
 	ImageLoader imageLoader;
@@ -40,6 +45,7 @@ public class DetailLaporanFragment extends Fragment {
 	}
 
 	private void initialComponent() {
+		detailLaporanEngine = new DetailLaporanEngine(this, laporan);
 		displayImageOptionsProfile = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_profile_menu)
 				.showImageForEmptyUri(R.drawable.ic_profile_menu)
@@ -83,11 +89,43 @@ public class DetailLaporanFragment extends Fragment {
 		textViewTime = (TextView) rootView.findViewById(R.id.textViewTime);
 		listViewKomentar = (ListView) rootView
 				.findViewById(R.id.listViewKomentar);
+		editTextComment = (EditText) rootView.findViewById(R.id.editTextComment);
+		
+		customAdapter = new CustomAdapter<Komentar>(getActivity(), R.layout.komentar_item_layout, detailLaporanEngine.getListKomentar() ) {
+			
+			@Override
+			public void setViewItems(View view, Komentar data) {
+				ImageView imageViewProfile = (ImageView) view.findViewById(R.id.imageViewProfile);
+				imageLoader.displayImage(data.getUser().getImageProfilePath().getUrlImange(), imageViewProfile , displayImageOptionsProfile);
+				ViewSetterUtilities.setTextToView(view, R.id.textViewUserKomentar, data.getUser().getName());
+				ViewSetterUtilities.setTextToView(view, R.id.textViewKomentarUser, data.getDataKomentar());
+			}
+		};
+		
+		listViewKomentar.setAdapter(customAdapter);
+		
+		buttonComment.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				detailLaporanEngine.comment(editTextComment.getText().toString());
+			}
+		});
+		
+		buttonPantau.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				detailLaporanEngine.pantau();
+			}
+		});
 		
 		textViewUserName.setText(laporan.getUser().getName());
 		textViewDataLaporan.setText(laporan.getDataLaporan());
 		imageLoader.displayImage(laporan.getUser().getImageProfilePath().getUrlImange(), imageViewProfile, displayImageOptionsProfile);
 		imageLoader.displayImage(laporan.getImagePath().getUrlImange(), imageViewLaporan, displayImageOptionsLaporan);
+		detailLaporanEngine.requestListKomentar();
+		detailLaporanEngine.view();
 	}
 
 	@Override
