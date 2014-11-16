@@ -4,6 +4,7 @@ import com.framework.common_utilities.ViewSetterUtilities;
 import com.models.DataSingleton;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -38,7 +39,14 @@ public class HomeFragment extends Fragment {
 					((HomeActivity)getActivity()).setFragment(new ProfileFragment(id), true);
 				}
 			});
-		
+		ViewSetterUtilities.getImageButton(customActionBar, R.id.imageButtonShot)
+			.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(getActivity(), LaporActivity.class));
+				}
+			});
 		buttonLaporan.setOnClickListener(new View.OnClickListener() {
 
 			@Override

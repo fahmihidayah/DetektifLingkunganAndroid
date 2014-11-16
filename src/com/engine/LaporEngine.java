@@ -27,13 +27,13 @@ public class LaporEngine implements Constantstas{
 		super();
 		this.laporActivity = laporActivity;
 		imagePath = laporActivity.getIntent().getStringExtra("image_path");
-		if(imagePath == null){
-			bitmapImage = (Bitmap) laporActivity.getIntent().getExtras().get("data");
-			laporActivity.imageViewImageLaporan.setImageBitmap(bitmapImage);
-		}
-		else {
-			laporActivity.imageViewImageLaporan.setImageBitmap(BitmapFactory.decodeFile(imagePath));	
-		}
+//		if(imagePath == null){
+//			bitmapImage = (Bitmap) laporActivity.getIntent().getExtras().get("data");
+//			laporActivity.imageViewImageLaporan.setImageBitmap(bitmapImage);
+//		}
+//		else {
+//			laporActivity.imageViewImageLaporan.setImageBitmap(BitmapFactory.decodeFile(imagePath));	
+//		}
 		
 	}
 	

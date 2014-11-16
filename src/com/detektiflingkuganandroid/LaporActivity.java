@@ -1,6 +1,7 @@
 package com.detektiflingkuganandroid;
 
 import com.engine.LaporEngine;
+import com.framework.common_utilities.ViewSetterUtilities;
 import com.models.Constantstas;
 import com.models.DataSingleton;
 
@@ -18,20 +19,24 @@ import android.widget.Spinner;
 
 public class LaporActivity extends FragmentActivity implements Constantstas{
 
-	public ImageView imageViewImageLaporan;
-	public EditText editTextDataLaporan, editTextLongitude, editTextLatitude;
-	public Spinner spinnerKategori;
-	private LaporEngine laporEngine;
-	private void initialComponent(){
-		imageViewImageLaporan = (ImageView) findViewById(R.id.imageViewImageLaporan);
-		laporEngine = new LaporEngine(this);
-		editTextDataLaporan = (EditText) findViewById(R.id.editTextDataLaporan);
-		editTextLongitude = (EditText) findViewById(R.id.editTextLongitude);
-		editTextLatitude = (EditText) findViewById(R.id.editTextLatitude);
-		spinnerKategori = (Spinner) findViewById(R.id.spinnerKategori);
-		initialLocation();
-	}
 	
+	private void initialComponent(){
+		View customActionBar = getLayoutInflater().inflate(
+				R.layout.custom_laporan_action_bar, null);
+		 getActionBar().setDisplayShowHomeEnabled(false);
+		 getActionBar().setDisplayShowTitleEnabled(false);
+		 getActionBar().setDisplayShowCustomEnabled(true);
+		 getActionBar().setCustomView(customActionBar);
+		ViewSetterUtilities.getImageView(customActionBar, R.id.imageButtonBack)
+				.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						 onBackPressed();
+					}
+				});
+	}
+
 	private void initialLocation(){
 		GPSTracker gpsTracker = new GPSTracker(this);
 		
@@ -46,8 +51,6 @@ public class LaporActivity extends FragmentActivity implements Constantstas{
 //			String city = gpsTracker.getLocality(this);
 //			String postalCode = gpsTracker.getPostalCode(this);
 			String addressLine = gpsTracker.getAddressLine(this);
-			editTextLatitude.setText(stringLatitude);
-			editTextLongitude.setText(stringLongitude);
 		}
 		else
 		{
@@ -61,15 +64,8 @@ public class LaporActivity extends FragmentActivity implements Constantstas{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.lapor_activity);
+		setContentView(R.layout.lapor_fragment);
 		initialComponent();
 	}
 	
-	public void onClickLapor(View view){
-		laporEngine.uploadLaporan(editTextDataLaporan.getText().toString(), 
-				Double.parseDouble(editTextLongitude.getText().toString()),
-				Double.parseDouble(editTextLatitude.getText().toString()),
-				spinnerKategori.getSelectedItem().toString());
-	}
-
 }

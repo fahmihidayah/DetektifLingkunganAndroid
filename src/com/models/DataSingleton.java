@@ -14,7 +14,7 @@ import com.framework.file_handler.FileHandler;
 public class DataSingleton extends Observable implements Constantstas{
 	private static DataSingleton instance;
 
-	private String serverAddress = "192.168.1.8:9000";
+	private String serverAddress = "192.168.1.4:9000";
 	private String authKey = "";
 	private boolean isLogin = false;
 	private User user = null;
