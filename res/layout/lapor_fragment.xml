@@ -33,7 +33,7 @@
             android:textColor="@color/white"/>
 
         <EditText
-            android:id="@+id/editTextDataLaporan"
+            android:id="@+id/editTextJudulLaporan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -64,7 +64,7 @@
             android:text="Katagori" />
 
         <Spinner
-            android:id="@+id/spinnerKatagori"
+            android:id="@+id/spinnerKategori"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
@@ -79,6 +79,7 @@
             android:background="@drawable/round_button_green_sea"
             android:textColor="@color/white"
             android:text="Submit"
+            android:onClick="onClickSubmit"
              />
     </LinearLayout>
 

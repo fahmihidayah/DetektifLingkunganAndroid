@@ -1,8 +1,11 @@
 package com.framework.common_utilities;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +42,16 @@ public class ViewSetterUtilities {
 		ImageView imageView = (ImageView) rootView.findViewById(imageViewResource);
 		imageView.setImageResource(imageResource);
 		return  imageView;
+	}
+	
+	public static ImageView setPathToImageView(View rootView, int imageViewResource, String path){
+		File file = new  File(path);
+		ImageView imageView = (ImageView) rootView.findViewById(imageViewResource);
+		if(file.exists()){
+			Bitmap bitmapImage = BitmapFactory.decodeFile(file.getAbsolutePath());
+			imageView.setImageBitmap(bitmapImage);
+		}
+		return imageView;
 	}
 	
 }
