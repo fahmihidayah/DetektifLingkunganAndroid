@@ -66,8 +66,8 @@ public class DetailUserProfileEngine implements Constantstas{
 		
 		RequestParams params = new RequestParams();
 			params.put("authKey", DataSingleton.getInstance().getAuthKey());
-			params.put("idUser",user.getId()+"");
-			params.put("idUserFollower", DataSingleton.getInstance().getUser().getId() + "");
+			params.put("userId",user.getId()+"");
+			params.put("followerUserId", DataSingleton.getInstance().getUser().getId() + "");
 			MyRestClient.post(API_USER_DETAIL, params, new JsonHttpResponseHandler(){
 				@Override
 				public void onSuccess(JSONObject response) {
@@ -95,12 +95,13 @@ public class DetailUserProfileEngine implements Constantstas{
 		
 		RequestParams params = new RequestParams();
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
-		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
-		params.put("idUserFollow", user.getId() + "");
+		params.put("userId", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("followerUserId", user.getId() + "");
 		MyRestClient.post(apiFollow, params, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(JSONObject response) {
 				
+				Toast.makeText(detailUserProfileActivity.getActivity(), "api" + apiFollow  , Toast.LENGTH_LONG).show();
 			}
 			
 			@Override
@@ -112,7 +113,7 @@ public class DetailUserProfileEngine implements Constantstas{
 	
 	public void requestListLaporan(){
 		RequestParams params = new RequestParams();
-		params.put("idUser", user.getId() + "");
+		params.put("userId", user.getId() + "");
 		params.put("type", "o");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
 		MyRestClient.post(API_LIST_LAPORAN, params, new JsonHttpResponseHandler(){
@@ -132,7 +133,7 @@ public class DetailUserProfileEngine implements Constantstas{
 	public void changeStatus(final String status){
 		RequestParams params = new RequestParams();
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
-		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("userId", DataSingleton.getInstance().getUser().getId() + "");
 		params.put("status", status);
 		MyRestClient.post(API_UPDATE_STATUS, params, new JsonHttpResponseHandler(){
 			@Override

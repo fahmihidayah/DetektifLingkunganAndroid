@@ -58,7 +58,7 @@ public class LaporEngine implements Constantstas {
 	}
 	
 	public void uploadLaporan(String dataLaporan, Double longitude,
-			Double latitude, String kategori) {
+			Double latitude, String kategori, String judulLaporan) {
 		RequestParams params = new RequestParams();
 		params.put("dataLaporan", dataLaporan);
 		params.put("userId", DataSingleton.getInstance().getUser().getId() + "");
