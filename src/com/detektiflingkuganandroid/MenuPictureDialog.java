@@ -23,11 +23,6 @@ public class MenuPictureDialog extends DialogFragment{
 				        startActivityForResult(intent, 1000);
 						break;
 					case 1:
-//						Intent intent = new Intent();
-//                        intent.setType("image/*");
-//                        intent.setAction(Intent.ACTION_GET_CONTENT);
-//                        startActivityForResult(Intent.createChooser(intent,
-//                                "Select Picture"), SELECT_PICTURE);
 						  Intent i = new Intent(
 			                        Intent.ACTION_PICK,
 			                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

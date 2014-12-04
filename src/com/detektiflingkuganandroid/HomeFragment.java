@@ -1,9 +1,14 @@
 package com.detektiflingkuganandroid;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 import com.framework.common_utilities.ViewSetterUtilities;
 import com.models.DataSingleton;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,100 +17,109 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 @SuppressLint("ResourceAsColor")
 public class HomeFragment extends Fragment {
 
-	private Button buttonLaporan, buttonMap, buttonConversation;
-	private View rootView;
+	@InjectView(R.id.buttonHome)
+	Button buttonLaporan;
+	@InjectView(R.id.buttonMap)
+	Button buttonMap;
+	@InjectView(R.id.buttonDiscover)
+	Button buttonConversation;
 
-	private void initialComponent() {
-		buttonLaporan = (Button) rootView.findViewById(R.id.buttonHome);
-		buttonMap = (Button) rootView.findViewById(R.id.buttonMap);
-		buttonConversation = (Button) rootView
-				.findViewById(R.id.buttonDiscover);
-
-		View customActionBar = getActivity().getLayoutInflater().inflate(R.layout.custom_home_action_bar, null);
-        getActivity().getActionBar().setDisplayShowHomeEnabled(false);
-        getActivity().getActionBar().setDisplayShowTitleEnabled(false);
-        getActivity().getActionBar().setDisplayShowCustomEnabled(true);
-        getActivity().getActionBar().setCustomView(customActionBar);
-        ViewSetterUtilities.getImageButton(customActionBar, R.id.ImageButtonProfileMenu)
-        	.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Long id = DataSingleton.getInstance().getUser().getId() ;
-					((HomeActivity)getActivity()).setFragment(new ProfileFragment(id), true);
-				}
-			});
-		ViewSetterUtilities.getImageButton(customActionBar, R.id.imageButtonShot)
-			.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(getActivity(), LaporActivity.class));
-				}
-			});
-		buttonLaporan.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				MainFragment mainFragment = new MainFragment();
-				changeFragment(mainFragment);
-				buttonLaporan.setBackgroundResource(R.color.red_act);
-				buttonMap.setBackgroundResource(R.color.dark_menu);
-				buttonConversation.setBackgroundResource(R.color.dark_menu);
-			}
-		});
-
-		buttonMap.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				MapFragment mapFragment = new MapFragment();
-				changeFragment(mapFragment);
-				buttonLaporan.setBackgroundResource(R.color.dark_menu);
-				buttonMap.setBackgroundResource(R.color.red_act);
-				buttonConversation.setBackgroundResource(R.color.dark_menu);
-			}
-		});
-
-		buttonConversation.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ConversationFragment conversationFragment = new ConversationFragment();
-				changeFragment(conversationFragment);
-				buttonLaporan.setBackgroundResource(R.color.dark_menu);
-				buttonMap.setBackgroundResource(R.color.dark_menu);
-				buttonConversation.setBackgroundResource(R.color.red_act);
-			}
-		});
-		
+	@OnClick(R.id.buttonHome)
+	public void onClickHome(Button button) {
 		MainFragment mainFragment = new MainFragment();
 		changeFragment(mainFragment);
 		buttonLaporan.setBackgroundResource(R.color.red_act);
 		buttonMap.setBackgroundResource(R.color.dark_menu);
 		buttonConversation.setBackgroundResource(R.color.dark_menu);
-
 	}
+
+	@OnClick(R.id.buttonMap)
+	public void onClickMap(Button button) {
+		MapFragment mapFragment = new MapFragment();
+		changeFragment(mapFragment);
+		buttonLaporan.setBackgroundResource(R.color.dark_menu);
+		buttonMap.setBackgroundResource(R.color.red_act);
+		buttonConversation.setBackgroundResource(R.color.dark_menu);
+	}
+
+	@OnClick(R.id.buttonDiscover)
+	public void onClickDiscover(Button button) {
+		DiscoverFragment conversationFragment = new DiscoverFragment();
+		changeFragment(conversationFragment);
+		buttonLaporan.setBackgroundResource(R.color.dark_menu);
+		buttonMap.setBackgroundResource(R.color.dark_menu);
+		buttonConversation.setBackgroundResource(R.color.red_act);
+	}
+
+	private View rootView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.home_fragment, null);
-		initialComponent();
+		ButterKnife.inject(this, rootView);
+		View customActionBar = getActivity().getLayoutInflater().inflate(
+				R.layout.custom_home_action_bar, null);
+		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
+		getActivity().getActionBar().setDisplayShowTitleEnabled(false);
+		getActivity().getActionBar().setDisplayShowCustomEnabled(true);
+		getActivity().getActionBar().setCustomView(customActionBar);
+		ViewHolder viewHolder = new ViewHolder(customActionBar, getActivity());
+		customActionBar.setTag(viewHolder);
+		onClickHome(null);
 		return rootView;
 	}
-	
-	public void changeFragment(Fragment fragment){
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+	public void changeFragment(Fragment fragment) {
+		FragmentTransaction transaction = getFragmentManager()
+				.beginTransaction();
 		transaction.replace(R.id.frameLayoutHome, fragment);
-//		if(isToBackStack){
-//			transaction.addToBackStack(null);
-//		}
 		transaction.commit();
+	}
+
+	public static class ViewHolder {
+		Activity activity;
+
+		@OnClick(R.id.ImageButtonProfileMenu)
+		public void onClickImageButtonProfileMenu(ImageButton button) {
+			Long id = DataSingleton.getInstance().getUser().getIdUser();
+			((HomeActivity) activity)
+					.setFragment(new ProfileFragment(id), true);
+		}
+
+		@OnClick(R.id.imageButtonShot)
+		public void onClickImageButtonShot(ImageButton button) {
+			activity.startActivity(new Intent(activity, LaporActivity.class));
+		}
+
+		@OnClick(R.id.imageButtonPrivateMessage)
+		public void onClickImageButtonPrivateMessage(ImageButton button) {
+			((HomeActivity) activity).setFragment(
+					new ListPrivateMessageUserFragment(), true);
+		}
+
+		@OnClick(R.id.imageButtonNotif)
+		public void onClickImageButtonNotif(ImageButton button) {
+			Toast.makeText(activity, "not implement yet", Toast.LENGTH_LONG)
+					.show();
+		}
+
+		@OnClick(R.id.imageButtonSearch)
+		public void onClickImageButtonSearch(ImageButton button) {
+			Toast.makeText(activity, "not implement yet", Toast.LENGTH_LONG)
+					.show();
+		}
+
+		public ViewHolder(View view, Activity activity) {
+			ButterKnife.inject(this, view);
+			this.activity = activity;
+		}
 	}
 
 }

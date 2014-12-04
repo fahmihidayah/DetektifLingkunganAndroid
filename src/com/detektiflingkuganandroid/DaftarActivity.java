@@ -1,49 +1,55 @@
 package com.detektiflingkuganandroid;
 
-import com.engine.DaftarEngine;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+import com.framework.rest_clients.MyRestClient;
+import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.models.Constantstas;
-import com.models.DataSingleton;
+import com.response.StringResponse;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.app.Activity;
-import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class DaftarActivity extends Activity implements Constantstas{
 
-	private DaftarEngine daftarEngine;
-	public EditText editTextName, editTextUserName, editTextPassword, editTextEmail;
-	
-	private void initialComponent(){
-		daftarEngine = new DaftarEngine(this);
-		editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-		editTextUserName = (EditText) findViewById(R.id.editTextUserName);
-		editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-		editTextName = (EditText) findViewById(R.id.editTextName);
-	}
+	@InjectView(R.id.editTextName) EditText editTextName;
+	@InjectView(R.id.editTextUserName)EditText editTextUserName; 
+	@InjectView(R.id.editTextPassword)EditText editTextPassword;
+	@InjectView(R.id.editTextEmail)EditText editTextEmail;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daftar_activity);
-		initialComponent();
+		ButterKnife.inject(this);
 	}
 	
 	public void onClickDaftar(View view){
-		daftarEngine.daftar(editTextName.getText().toString(),
-				editTextUserName.getText().toString(), 
-				editTextPassword.getText().toString(), 
-				editTextEmail.getText().toString());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		RequestParams params = new RequestParams();
+		params.put("name", editTextName.getText().toString());
+		params.put("userName", editTextUserName.getText().toString());
+		params.put("password", editTextPassword.getText().toString());
+		params.put("email", editTextEmail.getText().toString());
+		MyRestClient.post(API_DAFTAR, params, new JsonHttpResponseHandler(){
+			@Override
+			public void onSuccess(JSONObject response) {
+				Toast.makeText(DaftarActivity.this, "Success daftar", Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onFailure(Throwable e, JSONArray errorResponse) {
+				StringResponse stringResponse = new Gson().fromJson(errorResponse.toString(), StringResponse.class);  
+				Toast.makeText(DaftarActivity.this, stringResponse.getData(), Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 }

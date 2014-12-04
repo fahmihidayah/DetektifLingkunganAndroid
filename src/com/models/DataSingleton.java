@@ -10,16 +10,18 @@ import java.util.Observable;
 import android.content.Context;
 
 import com.framework.file_handler.FileHandler;
+import com.orm.query.Select;
 
 public class DataSingleton extends Observable implements Constantstas{
 	private static DataSingleton instance;
 
-	private String serverAddress = "192.168.1.6:9000";
+	private String serverAddress = "128.199.207.197:9000";
+	//http://128.199.207.197:9000
 	private String authKey = "";
 	private boolean isLogin = false;
 	private User user = null;
 	private List<LaporanHelper> listDataLaporan = new ArrayList<LaporanHelper>();
-
+	private ArrayList<PrivateMessage> listPrivateMessages = new ArrayList<PrivateMessage>();
 	
 	public String getAuthKey() {
 		return authKey;
@@ -72,6 +74,14 @@ public class DataSingleton extends Observable implements Constantstas{
 		return instance;
 	}
 
+	public List<PrivateMessage> getListPrivateMessages() {
+		return listPrivateMessages;
+	}
+
+	public void setListPrivateMessages(ArrayList<PrivateMessage> listPrivateMessages) {
+		this.listPrivateMessages = listPrivateMessages;
+	}
+
 	public void notifyObserverDataChange() {
 		setChanged();
 		notifyObservers();
@@ -83,6 +93,7 @@ public class DataSingleton extends Observable implements Constantstas{
 		FileHandler.putStringValue(context, AUTH_KEY, authKey);
 		try {
 			FileHandler.saveDataToFile(context, USER_DATA, Context.MODE_PRIVATE, user);
+			FileHandler.saveDataToFile(context, LIST_PM, MODE, listPrivateMessages);
 //			FileHandler.saveDataToFile(context, LIST_LAPORAN, Context.MODE_PRIVATE, (ArrayList<Laporan>) listDataLaporan);
 		} catch (FileNotFoundException e) {
 			
@@ -98,6 +109,8 @@ public class DataSingleton extends Observable implements Constantstas{
 		try {
 			user = (User) FileHandler.loadDataFromFile(context, USER_DATA);
 //			listDataLaporan = (ArrayList<Laporan>) FileHandler.loadDataFromFile(context, LIST_LAPORAN);
+			listPrivateMessages = (ArrayList<PrivateMessage>) FileHandler.loadDataFromFile(context, LIST_PM);
+			
 		} catch (StreamCorruptedException e) {
 			
 		} catch (FileNotFoundException e) {
@@ -105,6 +118,9 @@ public class DataSingleton extends Observable implements Constantstas{
 		} catch (IOException e) {
 			
 		} catch (ClassNotFoundException e) {
+			
+		}
+		catch(NullPointerException ex){
 			
 		}
 	}

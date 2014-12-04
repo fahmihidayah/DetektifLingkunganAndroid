@@ -10,9 +10,9 @@
 
     <ImageView
         android:id="@+id/imageViewScreenShotLaporan"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="fitStart"
-        android:src="@drawable/ic_launcher" />
+        android:layout_width="60dp"
+        android:layout_height="60dp" 
+        android:scaleType="center"
+        android:src="@drawable/ic_add" />
 
 </LinearLayout>

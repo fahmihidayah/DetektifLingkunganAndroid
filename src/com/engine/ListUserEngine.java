@@ -20,16 +20,19 @@ public class ListUserEngine implements Constantstas{
 	
 	private ListUserFragment listUserFragment;
 	private ArrayList<User> listUser = new ArrayList<User>();
-	public ListUserEngine(ListUserFragment listUserFragment) {
+	private User user;
+	public ListUserEngine(ListUserFragment listUserFragment, User user) {
 		super();
 		this.listUserFragment = listUserFragment;
+		this.user = user;
 	}
 	
 	public void requestListUser(String mode){
 		RequestParams params = new RequestParams();
-		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("userId",user.getIdUser() + "");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
 		params.put("mode", mode);
+		Toast.makeText(listUserFragment.getActivity(), "mode " + mode, 1000).show();
 		MyRestClient.post(API_GET_FOLLOWER, params,new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(JSONObject response) {

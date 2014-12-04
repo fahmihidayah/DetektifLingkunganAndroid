@@ -1,5 +1,6 @@
 package com.detektiflingkuganandroid;
 
+import com.engine.ImageViewHandler;
 import com.engine.MainEngine;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
@@ -34,9 +35,7 @@ public class MainFragment extends Fragment implements Constantstas,
 	public View rootView;
 	private static final int SELECT_PICTURE = 1;
 	private static int TAKE_PICTURE = 5;
-	public static String FIRST = "f";
-	public static String NEWEST = "h";
-	public static String OLDEST = "l";
+	
 
 	private String selectedImagePath = "";
 	public SwipeRefreshLayout mSwipeRefreshLayout;
@@ -54,21 +53,11 @@ public class MainFragment extends Fragment implements Constantstas,
 		customAdapter = new CustomAdapter<LaporanHelper>(getActivity(),
 				R.layout.laporan_item_layout_1, mainEngine.getListLaporan()) {
 
-			DisplayImageOptions displayImageOptions;
-			ImageLoader imageLoader;
+			ImageViewHandler imageViewHandler;
 
 			@Override
 			public void initialComponent() {
-				displayImageOptions = new DisplayImageOptions.Builder()
-						.showImageOnLoading(R.drawable.ic_profile_menu)
-						.showImageForEmptyUri(R.drawable.ic_profile_menu)
-						.showImageOnFail(R.drawable.ic_profile_menu)
-						.cacheInMemory(true).cacheOnDisk(true)
-						.considerExifParams(true)
-						.build();
-				imageLoader = ImageLoader.getInstance();
-				imageLoader.init(ImageLoaderConfiguration
-						.createDefault(getContext()));
+				imageViewHandler = new ImageViewHandler(getActivity());
 				super.initialComponent();
 			}
 
@@ -78,15 +67,23 @@ public class MainFragment extends Fragment implements Constantstas,
 						.findViewById(R.id.imageViewImageLaporan);
 				ImageView imageViewUserProfile = (ImageView) view
 						.findViewById(R.id.imageViewProfile);
-
-				imageLoader.displayImage(data.getImagePath().getUrlImange(),
-						imageViewImageLaporan, displayImageOptions);
-				imageLoader.displayImage(data.getUser().getImageProfilePath().getUrlImange(),
-						imageViewUserProfile, displayImageOptions);
+				imageViewUserProfile.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						((HomeActivity)getActivity()).setFragment(new ProfileFragment(data.getUser().getIdUser()), true);
+					}
+				});
+				imageViewHandler.getImageLoader().displayImage(data.getListImagePath().get(0).getUrlImange(),
+						imageViewImageLaporan, imageViewHandler.getDisplayImageOptionsDetail());	
+				imageViewHandler.getImageLoader().displayImage(data.getUser().getImageProfilePath().getUrlImange(),
+						imageViewUserProfile, imageViewHandler.getDisplayImageOptionsProfile());
 				ViewSetterUtilities.setTextToView(view, R.id.textViewName, data.getUser().getName());
 				ViewSetterUtilities.setTextToView(view, R.id.textViewDataLaporan, data.getDataLaporan());
 				// jumlah lihat
 				//ViewSetterUtilities.setTextToView(view, R.id.textViewDataLaporan, data.getDataLaporan());
+				ViewSetterUtilities.setTextToView(view, R.id.textViewJudulLaporan, data.getJudulLaporan());
 				ViewSetterUtilities.setTextToView(view, R.id.textViewJumlahComment, data.getJumlahKomentar() + "");
 				ViewSetterUtilities.setTextToView(view, R.id.textViewJumlahPatau, data.getJumlahUserPemantau() + "");
 				ViewSetterUtilities.setTextToView(view, R.id.textViewJumlahLihat, data.getViewer() +"");
@@ -111,8 +108,7 @@ public class MainFragment extends Fragment implements Constantstas,
 					
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						
+						((HomeActivity)getActivity()).setFragment(new DetailLaporanFragment(data), true);
 					}
 				});
 				

@@ -32,8 +32,9 @@ public class LaporActivity extends FragmentActivity implements Constantstas {
 	private GridView gridViewImageLaporan;
 	private CustomAdapter<ImageUpload> customAdapter;
 	private EditText editTextJudulLaporan, editTextDataLaporan;
+	
 	private Spinner spinnerKategori;
-
+	String stringLatitude, stringLongitude;
 	private LaporEngine laporEngine;
 
 	private void initialComponent() {
@@ -88,16 +89,16 @@ public class LaporActivity extends FragmentActivity implements Constantstas {
 				}
 			}
 		});
-
+		initialLocation();
 	}
 
 	private void initialLocation() {
 		GPSTracker gpsTracker = new GPSTracker(this);
 
 		if (gpsTracker.canGetLocation()) {
-			String stringLatitude = String.valueOf(gpsTracker.latitude);
+			 stringLatitude = String.valueOf(gpsTracker.latitude);
 
-			String stringLongitude = String.valueOf(gpsTracker.longitude);
+			stringLongitude = String.valueOf(gpsTracker.longitude);
 
 			// String country = gpsTracker.getCountryName(this);
 			// String city = gpsTracker.getLocality(this);
@@ -134,12 +135,12 @@ public class LaporActivity extends FragmentActivity implements Constantstas {
 			String picturePath = cursor.getString(columnIndex);
 			cursor.close();
 			laporEngine.addImage(picturePath);
-			
+			customAdapter.notifyDataSetChanged();
 		}
 
 	}
 
-	private void onClickSubmit(View view) {
-
+	public void onClickSubmit(View view) {
+		laporEngine.submitLaporan(editTextJudulLaporan.getText().toString(), editTextDataLaporan.getText().toString(), spinnerKategori.getSelectedItem().toString(), stringLongitude, stringLatitude);
 	}
 }

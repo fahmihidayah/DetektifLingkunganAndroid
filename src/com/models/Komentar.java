@@ -26,14 +26,15 @@ jumlahFollowingUser: 0
 }
  */
 public class Komentar implements Serializable {
-	private Long id;
+	public Long idKomentar;
 	private String dataKomentar;
 	private User user;
-	public Long getId() {
-		return id;
+	
+	public Long getIdKomentar() {
+		return idKomentar;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdKomentar(Long idKomentar) {
+		this.idKomentar = idKomentar;
 	}
 	public String getDataKomentar() {
 		return dataKomentar;

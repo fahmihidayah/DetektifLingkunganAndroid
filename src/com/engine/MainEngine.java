@@ -5,12 +5,11 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.detektiflingkuganandroid.DetailLaporanActivity;
 import com.detektiflingkuganandroid.LoginActivity;
-import com.detektiflingkuganandroid.MainActivity;
 import com.detektiflingkuganandroid.MainFragment;
 import com.framework.rest_clients.MyRestClient;
 import com.google.gson.Gson;
@@ -32,32 +31,44 @@ public class MainEngine implements Constantstas {
 		this.mainActivity = mainActivity;
 	}
 
-	public void requestLaporan(String type) {
+	public void requestLaporan(final String type) {
 		RequestParams params = new RequestParams();
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
 		String idLaporan = "";
 		if(!type.equalsIgnoreCase("f")){
 			if(listLaporan.size() > 0){
 				if(type.equalsIgnoreCase("h")){
-					idLaporan = listLaporan.get(0).getId() + "";	
+					idLaporan = listLaporan.get(0).getIdLaporan() + "";	
 				}else {
-					idLaporan = listLaporan.get(listLaporan.size() - 1).getId() + "";
+					idLaporan = listLaporan.get(listLaporan.size() - 1).getIdLaporan() + "";
 				}
 				
 			}
 		}
-		params.put("idLaporan", idLaporan);
-		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("laporanId", idLaporan);
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
 		params.put("type", type);
 //		Toast.makeText(mainActivity, "auth : " + DataSingleton.getInstance().getAuthKey() + "\n"  + 
 //		"idLaporan " + idLaporan + "\ntype : " + type, Toast.LENGTH_LONG).show();
+		Toast.makeText(mainActivity.getActivity(), params.toString(), Toast.LENGTH_LONG).show();
 		MyRestClient.post(API_LIST_LAPORAN, params,
 				new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject response) {
 						ListLaporanResponse listLaporanResponse = new Gson().fromJson(response.toString(), ListLaporanResponse.class);
-						listLaporan.clear();
-						listLaporan.addAll(listLaporanResponse.getData());
+						if(type.equalsIgnoreCase(FIRST)){
+							listLaporan.clear();
+							listLaporan.addAll(listLaporanResponse.getData());	
+						}
+						else if(type.equalsIgnoreCase(NEWEST)){
+							List<LaporanHelper> listLaporanTemp = listLaporanResponse.getData();
+							int i = 0;
+							for (LaporanHelper laporan : listLaporanTemp) {
+								listLaporan.add(i, laporan);
+								i++;
+							}
+						}
+						
 						Toast.makeText(mainActivity.getActivity(), "Data updated " + listLaporanResponse.getData().size(), Toast.LENGTH_LONG).show();
 						mainActivity.mSwipeRefreshLayout.setRefreshing(false);
 						mainActivity.customAdapter.notifyDataSetChanged();
@@ -100,8 +111,8 @@ public class MainEngine implements Constantstas {
 	
 	public void pantau(final Laporan data, String api){
 		RequestParams params = new RequestParams();
-		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
-		params.put("idLaporan", data.getId() + "");
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("laporanId", data.getIdLaporan() + "");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
 		Toast.makeText(mainActivity.getActivity(), api + params.toString(), Toast.LENGTH_LONG).show();
 		MyRestClient.post(api, params, new JsonHttpResponseHandler(){
@@ -121,11 +132,5 @@ public class MainEngine implements Constantstas {
 				Toast.makeText(mainActivity.getActivity(), "error", Toast.LENGTH_LONG).show();
 			}
 		});
-	}
-	
-	public void showDetailLaporan(Laporan data){
-		Intent intent = new Intent(mainActivity.getActivity(), DetailLaporanActivity.class);
-		intent.putExtra("laporan", data);
-		mainActivity.startActivity(intent);
 	}
 }

@@ -13,6 +13,10 @@
         <item >Kamera</item>
         <item >Ambil Gambar</item>
     </string-array>
+    <string-array name="menu_data">
+        <item >Gambar</item>
+        <item >Video</item>
+    </string-array>
     <string-array name="opt_kategori">
         <item >Sampah</item>
         <item >Kerusakan</item>

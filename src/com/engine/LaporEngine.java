@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.json.JSONObject;
 
@@ -16,11 +17,14 @@ import android.widget.Toast;
 import com.detektiflingkuganandroid.LaporActivity;
 import com.detektiflingkuganandroid.R;
 import com.framework.rest_clients.MyRestClient;
+import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.models.Constantstas;
 import com.models.DataSingleton;
 import com.models.ImageUpload;
+import com.models.Laporan;
+import com.response.LaporanResponse;
 
 public class LaporEngine implements Constantstas {
 	private LaporActivity laporActivity;
@@ -61,7 +65,7 @@ public class LaporEngine implements Constantstas {
 			Double latitude, String kategori, String judulLaporan) {
 		RequestParams params = new RequestParams();
 		params.put("dataLaporan", dataLaporan);
-		params.put("userId", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
 		params.put("longitude", "" + longitude);
 		params.put("latitude", "" + latitude);
@@ -98,6 +102,62 @@ public class LaporEngine implements Constantstas {
 								Toast.LENGTH_LONG).show();
 					}
 				});
+	}
+	
+	public void submitLaporan(String judulLaporan, String dataLaporan, String kategori, String longitude, String latitude){
+		RequestParams params = new RequestParams();
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("judulLaporan", judulLaporan);
+		params.put("longitude", longitude);
+		params.put("latitude", latitude);
+		params.put("katagoriLaporan", kategori);
+		params.put("dataLaporan", dataLaporan);	
+		Toast.makeText(laporActivity, longitude + latitude, Toast.LENGTH_LONG).show();
+		MyRestClient.post(API_INSERT_LAPORAN, params, new JsonHttpResponseHandler(){
+			@Override
+			public void onSuccess(JSONObject response) {
+				LaporanResponse laporanResponse = new Gson().fromJson(response.toString(), LaporanResponse.class);
+				Laporan laporan = laporanResponse.getData();
+				for (ImageUpload e : listImageUploads) {
+					if(!e.isAddImage()){
+						submitImageLaporan(laporan, e.getPath());	
+					}
+				}
+				Toast.makeText(laporActivity, "sucess insert laporan", Toast.LENGTH_LONG).show();
+			}
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				// TODO Auto-generated method stub
+				Toast.makeText(laporActivity, "fail insert laporan", Toast.LENGTH_LONG).show();
+			}
+		});
+		
+	}
+	
+	private void submitImageLaporan(Laporan laporan, String imagePath){
+		RequestParams params = new RequestParams();
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		params.put("laporanId", laporan.getIdLaporan()+"");
+		File file = new File(imagePath);
+		try {
+			params.put("picture", file);
+			MyRestClient.post(API_INSERT_IMAGE_LAPORAN, params, new JsonHttpResponseHandler()
+			{
+				@Override
+				public void onSuccess(JSONObject response) {
+					Toast.makeText(laporActivity, "success insert image", Toast.LENGTH_LONG).show();
+				}
+				@Override
+				public void onFailure(Throwable e, JSONObject errorResponse) {
+					// TODO Auto-generated method stub
+					Toast.makeText(laporActivity, "fail insert image", Toast.LENGTH_LONG).show();
+				}
+			});
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

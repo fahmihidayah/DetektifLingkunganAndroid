@@ -1,15 +1,15 @@
 package com.engine;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
 
 import android.app.DownloadManager.Request;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Toast;
-
-import com.detektiflingkuganandroid.DetailUserProfileActivity;
-import com.detektiflingkuganandroid.ImageDownloader;
 import com.detektiflingkuganandroid.ProfileFragment;
 import com.detektiflingkuganandroid.R;
 import com.framework.common_utilities.ViewSetterUtilities;
@@ -38,6 +38,7 @@ public class DetailUserProfileEngine implements Constantstas{
 	private ImageLoader imageLoader;
 	private DisplayImageOptions displayImageOptions;
 	
+	
 	public DetailUserProfileEngine(ProfileFragment detailUserProfileActivity, Long id) {
 		super();
 		this.detailUserProfileActivity = detailUserProfileActivity;
@@ -50,11 +51,11 @@ public class DetailUserProfileEngine implements Constantstas{
 		.cacheInMemory(true)
 		.cacheOnDisk(true)
 		.considerExifParams(true)
-		.displayer(new RoundedBitmapDisplayer(50))
+		.displayer(new RoundedBitmapDisplayer(70))
 		.build();
 		User currentUser = DataSingleton.getInstance().getUser();
-		user.setId(id);
-		if(currentUser.getId() == id){
+		user.setIdUser(id);
+		if(currentUser.getIdUser().compareTo(id)==0){
 			ownProfile = true;
 		}
 		else {
@@ -66,8 +67,8 @@ public class DetailUserProfileEngine implements Constantstas{
 		
 		RequestParams params = new RequestParams();
 			params.put("authKey", DataSingleton.getInstance().getAuthKey());
-			params.put("userId",user.getId()+"");
-			params.put("followerUserId", DataSingleton.getInstance().getUser().getId() + "");
+			params.put("userId",user.getIdUser()+"");
+			params.put("followerUserId", DataSingleton.getInstance().getUser().getIdUser() + "");
 			MyRestClient.post(API_USER_DETAIL, params, new JsonHttpResponseHandler(){
 				@Override
 				public void onSuccess(JSONObject response) {
@@ -79,7 +80,12 @@ public class DetailUserProfileEngine implements Constantstas{
 							detailUserProfileActivity.imageViewProfile, displayImageOptions);
 					detailUserProfileActivity.buttonFollower.setText(user.getJumlahFollowerUser() + "\nFollower");
 					detailUserProfileActivity.buttonFollowing.setText(user.getJumlahFollowingUser() + "\nFollowing");
-					
+					if(!user.getIsFollowing()){
+						detailUserProfileActivity.buttonFollow.setText("Follow me");
+					}
+					else {
+						detailUserProfileActivity.buttonFollow.setText("Unfollow me");
+					}
 				}
 			});
 		
@@ -95,25 +101,37 @@ public class DetailUserProfileEngine implements Constantstas{
 		
 		RequestParams params = new RequestParams();
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
-		params.put("userId", DataSingleton.getInstance().getUser().getId() + "");
-		params.put("followerUserId", user.getId() + "");
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("followedUserId", user.getIdUser() + "");
+		Toast.makeText(detailUserProfileActivity.getActivity(), params.toString() + " " + apiFollow, 1000).show();
 		MyRestClient.post(apiFollow, params, new JsonHttpResponseHandler(){
 			@Override
 			public void onSuccess(JSONObject response) {
+				if(user.getIsFollowing()){
+					detailUserProfileActivity.buttonFollow.setText("Follow me");
+					user.setJumlahFollowerUser(user.getJumlahFollowerUser()-1);
+					detailUserProfileActivity.buttonFollower.setText(user.getJumlahFollowerUser()+ "\nFollower");
+					user.setIsFollowing(false);
+				}
+				else {
+					user.setJumlahFollowerUser(user.getJumlahFollowerUser()+1);
+					detailUserProfileActivity.buttonFollower.setText(user.getJumlahFollowerUser() + "\nFollower");
+					detailUserProfileActivity.buttonFollow.setText("Unfollow me");
+					user.setIsFollowing(true);
+				}
 				
-				Toast.makeText(detailUserProfileActivity.getActivity(), "api" + apiFollow  , Toast.LENGTH_LONG).show();
 			}
 			
 			@Override
 			public void onFailure(Throwable e, JSONObject errorResponse) {
-				
+				Toast.makeText(detailUserProfileActivity.getActivity(), "error"  , Toast.LENGTH_LONG).show();
 			}
 		});
 	}
 	
 	public void requestListLaporan(){
 		RequestParams params = new RequestParams();
-		params.put("userId", user.getId() + "");
+		params.put("userId", user.getIdUser() + "");
 		params.put("type", "o");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
 		MyRestClient.post(API_LIST_LAPORAN, params, new JsonHttpResponseHandler(){
@@ -133,7 +151,7 @@ public class DetailUserProfileEngine implements Constantstas{
 	public void changeStatus(final String status){
 		RequestParams params = new RequestParams();
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
-		params.put("userId", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
 		params.put("status", status);
 		MyRestClient.post(API_UPDATE_STATUS, params, new JsonHttpResponseHandler(){
 			@Override
@@ -148,6 +166,29 @@ public class DetailUserProfileEngine implements Constantstas{
 		});
 	}
 	
+	public void changeUserImageProfile(final String imagePath){
+		RequestParams params = new RequestParams();
+		params.put("userId", user.getIdUser() + "");
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		File imageFile = new File(imagePath);
+		if(imageFile.exists()){
+			try {
+				params.put("picture", imageFile);
+				MyRestClient.post(API_CHANGE_USER_PROF_PICT, params, new JsonHttpResponseHandler(){
+					
+					@Override
+					public void onSuccess(JSONObject response) {
+						detailUserProfileActivity.imageViewProfile.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+						Toast.makeText(detailUserProfileActivity.getActivity(), "profile pict change", Toast.LENGTH_LONG).show();
+					}
+				});
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
 	
 	public User getUser() {
 		return user;
@@ -167,4 +208,5 @@ public class DetailUserProfileEngine implements Constantstas{
 	public DisplayImageOptions getDisplayImageOptions() {
 		return displayImageOptions;
 	}
+	
 }

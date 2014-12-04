@@ -1,6 +1,7 @@
 package com.detektiflingkuganandroid;
 
 
+import com.engine.ImageViewHandler;
 import com.engine.ListUserEngine;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 @SuppressLint("ValidFragment")
@@ -25,13 +27,14 @@ public class ListUserFragment extends Fragment implements Constantstas{
 	public View rootView;
 	public CustomAdapter<User> customAdapter;
 	public ListView listViewUser;
-	
-	public ListUserFragment(String mode) {
+	public User user;
+	public ListUserFragment(String mode,User user) {
 		this.mode = mode;
+		this.user =user;
 	}
 
 	private void initialComponent(){
-		listUserEngine = new ListUserEngine(this);
+		listUserEngine = new ListUserEngine(this, user);
 		View customActionBar = getActivity().getLayoutInflater().inflate(R.layout.custom_list_user_action_bar, null);
         getActivity().getActionBar().setDisplayShowHomeEnabled(false);
         getActivity().getActionBar().setDisplayShowTitleEnabled(false);
@@ -41,10 +44,17 @@ public class ListUserFragment extends Fragment implements Constantstas{
         
 		listViewUser = (ListView) rootView.findViewById(R.id.listViewUser);
 		customAdapter = new CustomAdapter<User>(getActivity(),R.layout.user_item_layout, listUserEngine.getListUser()) {
-			
+			ImageViewHandler imageViewHandler;
+			@Override
+			public void initialComponent() {
+				imageViewHandler = new ImageViewHandler(getActivity());
+				super.initialComponent();
+			}
 			@Override
 			public void setViewItems(View view, User data) {
+				ImageView imageView = (ImageView) view.findViewById(R.id.imageViewProfileUser);
 				ViewSetterUtilities.setTextToView(view, R.id.textViewNameUser, data.getName());
+				imageViewHandler.getImageLoader().displayImage(data.getImageProfilePath().getUrlImange(), imageView, imageViewHandler.getDisplayImageOptionsProfile());
 			}
 		};
 		listViewUser.setAdapter(customAdapter);
@@ -53,7 +63,8 @@ public class ListUserFragment extends Fragment implements Constantstas{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// change fragment to detail user profile
+				User user = listUserEngine.getListUser().get(arg2);
+				((HomeActivity)getActivity()).setFragment(new ProfileFragment(user.getIdUser()), true);
 			}
 		});
 		listUserEngine.requestListUser(mode);

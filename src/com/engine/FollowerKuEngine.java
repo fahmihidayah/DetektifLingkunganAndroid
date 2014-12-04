@@ -29,7 +29,7 @@ public class FollowerKuEngine implements Constantstas{
 	
 	public void requestListFollower(){
 		RequestParams params = new RequestParams();
-		params.put("idUser", DataSingleton.getInstance().getUser().getId() + "");
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
 		MyRestClient.post(API_GET_FOLLOWER, params, new JsonHttpResponseHandler(){
 			@Override

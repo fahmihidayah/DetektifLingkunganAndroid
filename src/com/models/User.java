@@ -3,53 +3,49 @@ package com.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.orm.SugarRecord;
+
+import android.text.style.SuggestionSpan;
 /*
-{
-  "status": "200",
-  "message": "success",
-  "data": {
-    "authKey": "42961a23-9e42-41a1-abe0-fda800bfce6e",
-    "user": {
-      "id": 2,
-      "userName": "f",
-      "password": "f",
+"user": {
+      "id": 1,
       "type": "PEMANTAU",
-      "name": "fahmi",       
-       "email": "fahmi@rembugan.com",
-      "status": "i'm a detective"
+      "name": "fahmi",
+      "email": "fahmi@rembugan.com",
+      "status": "Alhamdulillah",
+      "jumlahFollowerUser": 0,
+      "jumlahFollowingUser": 0,
+      "imageProfilePath": {
+        "id": 1,
+        "fileName": "6d249051_db1c_4704_8d78_d741ac02954a",
+        "keterangan": "default profile",
+        "urlImange": "http://192.168.1.5/uploads/6d249051_db1c_4704_8d78_d741ac02954a"
+      },
+      "isFollowing": false
     }
-  }
-}
  */
-public class User implements Serializable{
-	private Long id;
-	private String userName;
-	private String password;
-	private String type;
-	private String name;
-	private String email;
-	private String status;
-	private Integer jumlahFollowerUser = 0;
-	private Integer jumlahFollowingUser = 0;
-	private Boolean isFollowing;
-	private ImagePath imageProfilePath;
-	public Long getId() {
-		return id;
+public class User /*extends SugarRecord<User>*/ implements Serializable{
+	public  Long idUser;
+	public String type;
+	public String name;
+	public String email;
+	public String status;
+	public Integer jumlahFollowerUser = 0;
+	public Integer jumlahFollowingUser = 0;
+	public Boolean isFollowing;
+	public ImagePath imageProfilePath;
+	
+	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public Long getIdUser() {
+		return idUser;
 	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 	public String getType() {
 		return type;
@@ -99,6 +95,30 @@ public class User implements Serializable{
 	public void setImageProfilePath(ImagePath imageProfilePath) {
 		this.imageProfilePath = imageProfilePath;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((idUser == null) ? 0 : idUser.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (idUser == null) {
+			if (other.idUser != null)
+				return false;
+		} else if (!idUser.equals(other.idUser))
+			return false;
+		return true;
+	}
+	
 	
 	
 }

@@ -14,6 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:src="@drawable/ic_profile" />
 
     <TextView
@@ -25,16 +26,6 @@
         android:layout_toLeftOf="@+id/textViewTime"
         android:layout_toRightOf="@+id/imageViewProfile"
         android:text="Muhammad Fahmi Hidayah" />
-
-    <TextView
-        android:id="@+id/textViewDataLaporan"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_above="@+id/imageViewImageLaporan"
-        android:layout_alignLeft="@+id/textViewName"
-        android:layout_alignRight="@+id/textViewTime"
-        android:layout_below="@+id/textViewName"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/textViewTime"
@@ -119,5 +110,24 @@
         android:layout_marginTop="10dp" >
 
     </ListView>
+
+    <TextView
+        android:id="@+id/textViewJudulLaporan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewName"
+        android:layout_alignRight="@+id/textViewTime"
+        android:layout_below="@+id/textViewName"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewDataLaporan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewJudulLaporan"
+        android:layout_alignRight="@+id/textViewJudulLaporan"
+        android:layout_below="@+id/textViewJudulLaporan"
+        android:text="TextView"
+        android:textSize="10dp"/>
 
 </RelativeLayout>

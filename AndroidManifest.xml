@@ -7,63 +7,67 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <permission
         android:name="com.detektiflingkuganandroid.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.detektiflingkuganandroid.permission.MAPS_RECEIVE" />
-    
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.framework.gcm.permission.C2D_MESSAGE" />
 
     <!-- Required to show current location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    
     <!-- Required OpenGL ES 2.0. for Maps V2 -->
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_logo_sp"
         android:label="@string/app_name"
-        android:theme="@style/AppDtv"
-         >
+        android:theme="@style/AppDtv" 
+        android:name="com.orm.SugarApp">
         <activity
             android:name="com.detektiflingkuganandroid.SplashScreenActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"  >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity
+        <activity
             android:name="com.detektiflingkuganandroid.LoginActivity"
             android:label="Login"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.LoginActivity"/>
+                <action android:name="com.detektiflingkuganandroid.LoginActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.detektiflingkuganandroid.DaftarActivity"
-            android:label="Daftar" 
+            android:label="Daftar"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.DaftarActivity"/>
+                <action android:name="com.detektiflingkuganandroid.DaftarActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -72,7 +76,7 @@
             android:name="com.detektiflingkuganandroid.MainActivity"
             android:label="Laporan" >
             <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.MainActivity"/>
+                <action android:name="com.detektiflingkuganandroid.MainActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -81,7 +85,7 @@
             android:name="com.detektiflingkuganandroid.HomeActivity"
             android:label="Laporan" >
             <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.HomeActivity"/>
+                <action android:name="com.detektiflingkuganandroid.HomeActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -90,16 +94,7 @@
             android:name="com.detektiflingkuganandroid.LaporanMapActivity"
             android:label="Letak Kejadian" >
             <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.LaporanMapActivity"/>
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.detektiflingkuganandroid.DetailLaporanActivity"
-            android:label="Komentar" >
-            <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.DetailLaporanActivity"/>
+                <action android:name="com.detektiflingkuganandroid.LaporanMapActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -108,7 +103,7 @@
             android:name="com.detektiflingkuganandroid.DetailUserProfileActivity"
             android:label="Profil" >
             <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.DetailUserProfileActivity"/>
+                <action android:name="com.detektiflingkuganandroid.DetailUserProfileActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -117,22 +112,54 @@
             android:name="com.detektiflingkuganandroid.LaporActivity"
             android:label="Lapor" >
             <intent-filter>
-                <action android:name="com.detektiflingkuganandroid.LaporActivity"/>
+                <action android:name="com.detektiflingkuganandroid.LaporActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-         <meta-data
+
+        <receiver android:name="com.detektiflingkuganandroid.PrivateMessageBroadcastReceiver" >
+            <intent-filter android:priority="90" >
+                <action android:name="BROADCAST_RECEIVER_MESSAGE_DETEKTIV_LINGKUNGAN" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.framework.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.framework.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.framework.gcm.GcmIntentService" />
+
+        <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-         <meta-data
+        <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCQ7NRzUgcuMvCn_8mkUmbtN__1XJlvx6A" />
-            <!-- release AIzaSyAhPFPpP7nhGZCw7gOzLXNEbM_jh7yXyMA
+        <!--
+                 release AIzaSyAhPFPpP7nhGZCw7gOzLXNEbM_jh7yXyMA
             	debug AIzaSyB6VsXFjf3h_5Bj3vK8gy1BYIX3INAWU2k
             	SHA1 - 5B:07:08:DE:72:FE:0B:82:CB:9D:C2:D6:3B:23:E6:7A:83:AB:79:67
-            -->
+        -->
+        <meta-data
+            android:name="DATABASE"
+            android:value="detektif_lingkungan.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.models" />
     </application>
 
 </manifest>

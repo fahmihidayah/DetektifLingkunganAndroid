@@ -11,7 +11,7 @@
 
     <TableRow
         android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
         <ImageButton
@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_green_sea"
             android:src="@drawable/ic_search_menu" />
+
     </TableRow>
 
 </TableLayout>

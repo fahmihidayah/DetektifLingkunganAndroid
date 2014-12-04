@@ -3,10 +3,10 @@
     android:id="@+id/ScrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp"
     tools:context=".SplashScreenActivity" 
     android:background="#DDD">
 
@@ -15,22 +15,30 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <Spinner
+            android:id="@+id/spinnerType"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/round_corner_white" 
+            android:entries="@array/menu_gambar" 
+            android:visibility="gone"/>
+
         <GridView
             android:id="@+id/gridViewImageLaporan"
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:background="@color/white"
+            android:layout_marginTop="10dp"
             android:numColumns="3" >
         </GridView>
 
-        <Button
-            android:id="@+id/buttonTambahGambar"
+        <ImageView
+            android:id="@+id/imageViewScreenShotVideo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Tambah Gambar" 
-            android:background="@drawable/round_button_green_sea"
-            android:textColor="@color/white"/>
+            android:src="@drawable/ic_add" 
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/editTextJudulLaporan"
