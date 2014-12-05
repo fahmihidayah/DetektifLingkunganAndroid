@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 import android.app.DownloadManager.Request;
+import android.app.ProgressDialog;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Toast;
@@ -170,16 +171,37 @@ public class DetailUserProfileEngine implements Constantstas{
 		RequestParams params = new RequestParams();
 		params.put("userId", user.getIdUser() + "");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		Toast.makeText(detailUserProfileActivity.getActivity(), params.toString(), 1000).show();
 		File imageFile = new File(imagePath);
+		final ProgressDialog progress = new ProgressDialog(detailUserProfileActivity.getActivity());
 		if(imageFile.exists()){
 			try {
 				params.put("picture", imageFile);
+				
 				MyRestClient.post(API_CHANGE_USER_PROF_PICT, params, new JsonHttpResponseHandler(){
 					
 					@Override
+					public void onProgress(int bytesWritten, int totalSize) {
+						progress.setMessage("Uploading image... ");
+						progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+						progress.setIndeterminate(true);
+						progress.show();
+					}
+					
+					@Override
 					public void onSuccess(JSONObject response) {
-						detailUserProfileActivity.imageViewProfile.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+						//detailUserProfileActivity.imageViewProfile.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+						
+						imageLoader.displayImage(imagePath, 
+								detailUserProfileActivity.imageViewProfile, displayImageOptions);
 						Toast.makeText(detailUserProfileActivity.getActivity(), "profile pict change", Toast.LENGTH_LONG).show();
+						progress.dismiss();
+					}
+					@Override
+					public void onFailure(Throwable e, JSONObject errorResponse) {
+						Toast.makeText(detailUserProfileActivity.getActivity(), "fail upload image", Toast.LENGTH_LONG).show();
+						super.onFailure(e, errorResponse);
+						progress.dismiss();
 					}
 				});
 			} catch (FileNotFoundException e) {

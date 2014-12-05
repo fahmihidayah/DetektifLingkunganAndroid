@@ -41,7 +41,7 @@
         android:icon="@drawable/ic_logo_sp"
         android:label="@string/app_name"
         android:theme="@style/AppDtv" 
-        android:name="com.orm.SugarApp">
+        android:name="com.detektiflingkuganandroid.DetektifLingkunganApp">
         <activity
             android:name="com.detektiflingkuganandroid.SplashScreenActivity"
             android:label="@string/app_name"

@@ -15,7 +15,7 @@ import com.orm.query.Select;
 public class DataSingleton extends Observable implements Constantstas{
 	private static DataSingleton instance;
 
-	private String serverAddress = "128.199.207.197:9000";
+	private String serverAddress = "192.168.1.8:9000";
 	//http://128.199.207.197:9000
 	private String authKey = "";
 	private boolean isLogin = false;
