@@ -6,6 +6,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
+import com.engine.ProgressDialogFactory;
 import com.framework.gcm.GcmDataHandler;
 import com.framework.gcm.OnFinishListenner;
 import com.framework.rest_clients.MyRestClient;
@@ -46,11 +47,19 @@ public class LoginActivity extends FragmentActivity implements Constantstas, OnF
 		RequestParams params = new RequestParams();
 		params.put("userName", editTextUserName.getText().toString());
 		params.put("password", editTextPassword.getText().toString());
-		Toast.makeText(this, "user login", Toast.LENGTH_LONG).show();
+		
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(this);
+		
 		MyRestClient.post(API_LOGIN, params, new JsonHttpResponseHandler(){
 			
 			@Override
+			public void onProgress(int bytesWritten, int totalSize) {
+				dialogFactory.show("Login...", false);
+			}
+			
+			@Override
 			public void onSuccess(JSONObject response) {
+				dialogFactory.dismiss();
 				LoginResponse loginResponse = new Gson().fromJson(response.toString(), LoginResponse.class);
 				DataSingleton.getInstance().setUser(loginResponse.getData().getUser());
 				Toast.makeText(LoginActivity.this, "user id " + DataSingleton.getInstance().getUser().getIdUser(), Toast.LENGTH_LONG).show();
@@ -58,11 +67,13 @@ public class LoginActivity extends FragmentActivity implements Constantstas, OnF
 				DataSingleton.getInstance().setAuthKey(loginResponse.getData().getAuthKey());
 				DataSingleton.getInstance().saveToFile(LoginActivity.this);
 				gcmDataHandler.registerDevice();
+				
 			}
 			
 			@Override
 			public void onFailure(Throwable e, JSONObject errorResponse) {
 				Toast.makeText(LoginActivity.this,"error", Toast.LENGTH_LONG).show();
+				dialogFactory.dismiss();
 			}
 		});
 	}
@@ -99,12 +110,26 @@ public class LoginActivity extends FragmentActivity implements Constantstas, OnF
 		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
 		params.put("gcmId", registerID);
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(this);
+		
 		MyRestClient.post(API_UPDATE_GCM_ID, params, new JsonHttpResponseHandler(){
+			
+			@Override
+			public void onProgress(int bytesWritten, int totalSize) {
+				dialogFactory.show("registering gcm id...", false);
+			}
+			
 			@Override
 			public void onSuccess(JSONObject response) {
+				dialogFactory.dismiss();
 				Toast.makeText(LoginActivity.this, "Login", Toast.LENGTH_LONG).show();
 				LoginActivity.this.startActivity(new Intent(LoginActivity.this, HomeActivity.class));
 				LoginActivity.this.finish();
+			}
+			
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				dialogFactory.dismiss();
 			}
 		});
 	}

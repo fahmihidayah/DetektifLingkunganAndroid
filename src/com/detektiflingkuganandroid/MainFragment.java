@@ -1,6 +1,6 @@
 package com.detektiflingkuganandroid;
 
-import com.engine.ImageViewHandler;
+import com.engine.DetektivUtilities;
 import com.engine.MainEngine;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
@@ -53,11 +53,11 @@ public class MainFragment extends Fragment implements Constantstas,
 		customAdapter = new CustomAdapter<LaporanHelper>(getActivity(),
 				R.layout.laporan_item_layout_1, mainEngine.getListLaporan()) {
 
-			ImageViewHandler imageViewHandler;
+			DetektivUtilities imageViewHandler;
 
 			@Override
 			public void initialComponent() {
-				imageViewHandler = new ImageViewHandler(getActivity());
+				imageViewHandler = new DetektivUtilities(getActivity());
 				super.initialComponent();
 			}
 

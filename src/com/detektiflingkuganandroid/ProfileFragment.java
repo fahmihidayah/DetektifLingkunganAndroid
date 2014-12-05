@@ -1,16 +1,31 @@
 package com.detektiflingkuganandroid;
 
-import com.engine.DetailUserProfileEngine;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
+import com.engine.DetektivUtilities;
+import com.engine.ProgressDialogFactory;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
-import com.google.android.gms.drive.events.ChangeEvent;
-import com.google.android.gms.internal.bu;
+import com.framework.rest_clients.MyRestClient;
+import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.models.Constantstas;
 import com.models.DataSingleton;
 import com.models.Laporan;
+import com.models.User;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.process.BitmapProcessor;
+import com.response.ListLaporanResponse;
+import com.response.UserResponse;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -19,7 +34,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,30 +53,113 @@ import android.widget.Toast;
 @SuppressLint("ValidFragment")
 public class ProfileFragment extends Fragment implements Constantstas {
 
-	private DetailUserProfileEngine detailUserProfileEngine;
 
 	private static int TAKE_PICTURE = 0;
 	private static int SELECT_PICTURE = 1;
 
 	private Long userId;
-
 	public View rootView;
-	public Button buttonFollower;
-	public Button buttonFollowing;
-	public Button buttonFollow;
-	public ImageButton imageButtonEditStatus;
-	public ImageView imageViewProfile;
-	public GridView gridViewLaporan;
+	@InjectView(R.id.buttonFollower) Button buttonFollower;
+	@InjectView(R.id.buttonFollow) Button buttonFollow;
+	@InjectView(R.id.buttonFollowing) Button buttonFollowing;
+	
+	@InjectView(R.id.imageButtonEditStatus) ImageButton imageButtonEditStatus;
+	@InjectView(R.id.imageViewProfile) ImageView imageViewProfile;
+	@InjectView(R.id.gridViewLaporan) GridView gridViewLaporan;
+	
+	@InjectView(R.id.textViewName) TextView textViewName;
+	@InjectView(R.id.textViewStatus) TextView textViewStatus;
+	
+	@OnClick(R.id.buttonFollow)
+	public void follow(){
+		apiFollow = API_FOLLOW;
+		if(user.getIsFollowing()){
+			apiFollow = API_UNFOLLOW;
+		}
+		
+		RequestParams params = new RequestParams();
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("followedUserId", user.getIdUser() + "");
+		
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+		
+		MyRestClient.post(apiFollow, params, new JsonHttpResponseHandler(){
+			@Override
+			public void onProgress(int bytesWritten, int totalSize) {
+				dialogFactory.show("loading ..", false);
+			}
+			
+			@Override
+			public void onSuccess(JSONObject response) {
+				if(user.getIsFollowing()){
+					buttonFollow.setText("Follow me");
+					user.setJumlahFollowerUser(user.getJumlahFollowerUser()-1);
+					buttonFollower.setText(user.getJumlahFollowerUser()+ "\nFollower");
+					user.setIsFollowing(false);
+				}
+				else {
+					user.setJumlahFollowerUser(user.getJumlahFollowerUser()+1);
+					buttonFollower.setText(user.getJumlahFollowerUser() + "\nFollower");
+					buttonFollow.setText("Unfollow me");
+					user.setIsFollowing(true);
+				}
+				dialogFactory.dismiss();
+			}
+			
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				dialogFactory.dismiss();
+				Toast.makeText(getActivity(), "error"  , Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+	
+	@OnClick(R.id.buttonFollowing)
+	public void onClickFollowing(View v) {
+		((HomeActivity) getActivity()).setFragment(new ListUserFragment(MODE_FOLLOWING,  user), true);
+	}
+	
+	@OnClick(R.id.buttonFollower)
+	public void onClickFollower(View v) {
+		((HomeActivity) getActivity()).setFragment(new ListUserFragment(MODE_FOLLOWER, user), true);
+	}
+	
+	@OnClick(R.id.imageButtonEditStatus)
+	public void onClickEditStatus(View view){
+		UpdateStatusDialog updateStatusDialog = new UpdateStatusDialog();
+		updateStatusDialog.show(getFragmentManager(), "update_status");
+	}
+	
+	@OnClick(R.id.imageViewProfile) 
+	public void onClickImageViewProfile(View v){
+		if (ownProfile) {
+			MenuPictureDialog menuPictureDialog = new MenuPictureDialog();
+			menuPictureDialog.show(getFragmentManager(),
+					"menu_picture_dialog");
+		}
+	}
+	
+	public DetektivUtilities imageViewHandler;
 	public CustomAdapter<Laporan> customAdapter;
-	public TextView textViewStatus, textViewName;
-
+	private ArrayList<Laporan> listLaporan = new ArrayList<Laporan>();
+	private User user = new User();
+	private boolean ownProfile;
+	private String apiFollow;
+	
 	// message to fragment pass here
 	public ProfileFragment(Long userId) {
 		this.userId = userId;
 	}
 
 	private void initialComponent() {
-		detailUserProfileEngine = new DetailUserProfileEngine(this, userId);
+//		detailUserProfileEngine = new DetailUserProfileEngine(this, userId);
+		user.idUser = userId;
+		if(DataSingleton.getInstance().getUser().getIdUser().equals(userId)){
+			ownProfile = true;
+			user = DataSingleton.getInstance().getUser();
+		}
+		imageViewHandler = new DetektivUtilities(getActivity(), 70);
 		View customActionBar = getActivity().getLayoutInflater().inflate(
 				R.layout.custom_user_detail_profile_action_bar, null);
 		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
@@ -77,70 +174,10 @@ public class ProfileFragment extends Fragment implements Constantstas {
 						getActivity().onBackPressed();
 					}
 				});
-
-		buttonFollow = (Button) rootView.findViewById(R.id.buttonFollow);
-		buttonFollower = (Button) rootView.findViewById(R.id.buttonFollower);
-		buttonFollowing = (Button) rootView.findViewById(R.id.buttonFollowing);
-		imageButtonEditStatus = (ImageButton) rootView
-				.findViewById(R.id.imageButtonEditStatus);
-		textViewName = (TextView) rootView.findViewById(R.id.textViewName);
-		textViewStatus = (TextView) rootView.findViewById(R.id.textViewStatus);
-		imageViewProfile = (ImageView) rootView
-				.findViewById(R.id.imageViewProfile);
-		gridViewLaporan = (GridView) rootView
-				.findViewById(R.id.gridViewLaporan);
-		buttonFollow.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				detailUserProfileEngine.follow();
-			}
-		});
-
-		buttonFollower.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				((HomeActivity) getActivity()).setFragment(
-						new ListUserFragment(MODE_FOLLOWER, detailUserProfileEngine.getUser()), true);
-			}
-		});
-
-		buttonFollowing.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				((HomeActivity) getActivity()).setFragment(
-						new ListUserFragment(MODE_FOLLOWING,  detailUserProfileEngine.getUser()), true);
-			}
-		});
-
-		imageButtonEditStatus.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				UpdateStatusDialog updateStatusDialog = new UpdateStatusDialog();
-				updateStatusDialog.show(getFragmentManager(), "update_status");
-			}
-		});
-
-		imageViewProfile.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (detailUserProfileEngine.isOwnProfile()) {
-					MenuPictureDialog menuPictureDialog = new MenuPictureDialog();
-					menuPictureDialog.show(getFragmentManager(),
-							"menu_picture_dialog");
-				}
-			}
-		});
 		
 		customAdapter = new CustomAdapter<Laporan>(getActivity(),
 				R.layout.screen_shot_image_laporan_layout,
-				detailUserProfileEngine.getListLaporan()) {
+				listLaporan) {
 
 			private DisplayImageOptions displayImageOptions;
 
@@ -167,7 +204,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 
 			@Override
 			public void setViewItems(View view, Laporan data) {
-				detailUserProfileEngine.getImageLoader().displayImage(
+				imageViewHandler.getImageLoader().displayImage(
 						data.getListImagePath().get(0).getUrlImange(),
 						(ImageView) view
 								.findViewById(R.id.imageViewScreenShotLaporan),
@@ -175,14 +212,15 @@ public class ProfileFragment extends Fragment implements Constantstas {
 			}
 		};
 		gridViewLaporan.setAdapter(customAdapter);
-		if (detailUserProfileEngine.isOwnProfile()) {
+		
+		if (ownProfile) {
 			buttonFollow.setVisibility(View.GONE);
 		}
 		else {
 			imageButtonEditStatus.setVisibility(View.GONE);
 		}
-		detailUserProfileEngine.getUserDetail();
-		detailUserProfileEngine.requestListLaporan();
+		getUserDetail();
+		requestListLaporan();
 	}
 
 	@Override
@@ -190,6 +228,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.detail_user_profile_activity_1,
 				null);
+		ButterKnife.inject(this, rootView);
 		initialComponent();
 		return rootView;
 	}
@@ -206,7 +245,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 
 			editTextStatus = (EditText) view
 					.findViewById(R.id.editTextServerStatus);
-			editTextStatus.setText(detailUserProfileEngine.getUser()
+			editTextStatus.setText(user
 					.getStatus());
 			builder.setView(view)
 					.setTitle("Update Status")
@@ -216,8 +255,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									detailUserProfileEngine
-											.changeStatus(editTextStatus
+									changeStatus(editTextStatus
 													.getText().toString());
 									Toast.makeText(getActivity(),
 											"status updated", Toast.LENGTH_LONG)
@@ -322,7 +360,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					detailUserProfileEngine.changeUserImageProfile(imagePath);
+					changeUserImageProfile(imagePath);
 				}
 			});
 			builder.setNegativeButton("No", new OnClickListener() {
@@ -335,6 +373,147 @@ public class ProfileFragment extends Fragment implements Constantstas {
 			
 			return builder.create();
 		}
+	}
+	
 
+	public void getUserDetail(){
+		
+		RequestParams params = new RequestParams();
+			params.put("authKey", DataSingleton.getInstance().getAuthKey());
+			params.put("userId",user.getIdUser()+"");
+			params.put("followerUserId", DataSingleton.getInstance().getUser().getIdUser() + "");
+			
+			final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+			
+			MyRestClient.post(API_USER_DETAIL, params, new JsonHttpResponseHandler(){
+				
+				@Override
+				public void onProgress(int bytesWritten, int totalSize) {
+					dialogFactory.show("Load user detail...",false);
+				}
+				
+				@Override
+				public void onSuccess(JSONObject response) {
+					
+					UserResponse userResponse = new Gson().fromJson(response.toString(), UserResponse.class);
+					user = userResponse.getData();
+					textViewStatus.setText(user.getStatus());
+					textViewName.setText(user.getName());
+					imageViewHandler.getImageLoader().displayImage(user.getImageProfilePath().getUrlImange(), 
+							imageViewProfile, imageViewHandler.getDisplayImageOptionsProfile());
+					buttonFollower.setText(user.getJumlahFollowerUser() + "\nFollower");
+					buttonFollowing.setText(user.getJumlahFollowingUser() + "\nFollowing");
+					if(!user.getIsFollowing()){
+						buttonFollow.setText("Follow me");
+					}
+					else {
+						buttonFollow.setText("Unfollow me");
+					}
+					dialogFactory.dismiss();
+				}
+				
+				@Override
+				public void onFailure(Throwable e, JSONObject errorResponse) {
+					dialogFactory.dismiss();
+				}
+			});
+	}
+	
+	public void changeUserImageProfile(final String imagePath){
+		RequestParams params = new RequestParams();
+		params.put("userId", user.getIdUser() + "");
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		Toast.makeText(getActivity(), params.toString(), 1000).show();
+		File imageFile = new File(imagePath);
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+		if(imageFile.exists()){
+			try {
+				params.put("picture", imageFile);
+				
+				MyRestClient.post(API_CHANGE_USER_PROF_PICT, params, new JsonHttpResponseHandler(){
+					
+					@Override
+					public void onProgress(int bytesWritten, int totalSize) {
+						dialogFactory.show("Upload image", false);
+					}
+					
+					@Override
+					public void onSuccess(JSONObject response) {
+						//detailUserProfileActivity.imageViewProfile.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+						UserResponse userResponse = new Gson().fromJson(response.toString(), UserResponse.class);
+						imageViewHandler.getImageLoader().displayImage(userResponse.getData().getImageProfilePath().getUrlImange(), 
+								imageViewProfile, imageViewHandler.getDisplayImageOptionsProfile());
+						Toast.makeText(getActivity(), "profile pict change", Toast.LENGTH_LONG).show();
+						dialogFactory.dismiss();
+					}
+					@Override
+					public void onFailure(Throwable e, JSONObject errorResponse) {
+						Toast.makeText(getActivity(), "fail upload image", Toast.LENGTH_LONG).show();
+						super.onFailure(e, errorResponse);
+						dialogFactory.dismiss();
+					}
+				});
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
+	}
+	public void requestListLaporan(){
+		RequestParams params = new RequestParams();
+		params.put("userId", user.getIdUser() + "");
+		params.put("type", "o");
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+		MyRestClient.post(API_LIST_LAPORAN, params, new JsonHttpResponseHandler(){
+			
+			@Override
+			public void onProgress(int bytesWritten, int totalSize) {
+				dialogFactory.show("Request list laporan...", false);
+			}
+			
+			@Override
+			public void onSuccess(JSONObject response) {
+				ListLaporanResponse listLaporanResponse = new Gson().fromJson(response.toString(), ListLaporanResponse.class);
+				listLaporan.clear();
+				listLaporan.addAll(listLaporanResponse.getData());
+				customAdapter.notifyDataSetChanged();
+				dialogFactory.dismiss();
+			}
+			
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				dialogFactory.dismiss();
+			}
+			
+		});
+	}
+	
+	public void changeStatus(final String status){
+		RequestParams params = new RequestParams();
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("status", status);
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+		MyRestClient.post(API_UPDATE_STATUS, params, new JsonHttpResponseHandler(){
+			
+			@Override
+			public void onProgress(int bytesWritten, int totalSize) {
+				dialogFactory.show("Set status", false);
+			}
+			
+			@Override
+			public void onSuccess(JSONObject response) {
+				user.setStatus(status);
+				textViewStatus.setText(user.getStatus());
+				dialogFactory.dismiss();
+			}
+			
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				dialogFactory.dismiss();
+			}
+		});
 	}
 }

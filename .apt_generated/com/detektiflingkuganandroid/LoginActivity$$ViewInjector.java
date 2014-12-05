@@ -11,15 +11,6 @@ public class LoginActivity$$ViewInjector {
     target.editTextUserName = (android.widget.EditText) view;
     view = finder.findRequiredView(source, 2131427365, "field 'editTextPassword'");
     target.editTextPassword = (android.widget.EditText) view;
-    view = finder.findRequiredView(source, 2131427431, "method 'onClickDaftar'");
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.onClickDaftar(p0);
-        }
-      });
     view = finder.findRequiredView(source, 2131427430, "method 'onClickLogin'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
@@ -27,6 +18,15 @@ public class LoginActivity$$ViewInjector {
           android.view.View p0
         ) {
           target.onClickLogin(p0);
+        }
+      });
+    view = finder.findRequiredView(source, 2131427431, "method 'onClickDaftar'");
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.onClickDaftar(p0);
         }
       });
   }

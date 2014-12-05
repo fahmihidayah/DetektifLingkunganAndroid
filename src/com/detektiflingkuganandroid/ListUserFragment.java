@@ -1,7 +1,7 @@
 package com.detektiflingkuganandroid;
 
 
-import com.engine.ImageViewHandler;
+import com.engine.DetektivUtilities;
 import com.engine.ListUserEngine;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
@@ -44,10 +44,10 @@ public class ListUserFragment extends Fragment implements Constantstas{
         
 		listViewUser = (ListView) rootView.findViewById(R.id.listViewUser);
 		customAdapter = new CustomAdapter<User>(getActivity(),R.layout.user_item_layout, listUserEngine.getListUser()) {
-			ImageViewHandler imageViewHandler;
+			DetektivUtilities imageViewHandler;
 			@Override
 			public void initialComponent() {
-				imageViewHandler = new ImageViewHandler(getActivity());
+				imageViewHandler = new DetektivUtilities(getActivity());
 				super.initialComponent();
 			}
 			@Override

@@ -8,7 +8,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-import com.engine.ImageViewHandler;
+import com.engine.DetektivUtilities;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
 import com.framework.rest_clients.MyRestClient;
@@ -106,7 +106,7 @@ public class DetailLaporanFragment extends Fragment implements Constantstas {
 		});
 	}
 	
-	ImageViewHandler imageViewHandler;
+	DetektivUtilities imageViewHandler;
 	
 	public CustomAdapter<Komentar> customAdapter;
 	public View rootView;
@@ -119,7 +119,7 @@ public class DetailLaporanFragment extends Fragment implements Constantstas {
 	}
 
 	private void initialComponent() {
-		imageViewHandler = new ImageViewHandler(getActivity());
+		imageViewHandler = new DetektivUtilities(getActivity());
 		View customActionBar = getActivity().getLayoutInflater().inflate(
 				R.layout.custom_detail_laporan_action_bar, null);
 		getActivity().getActionBar().setDisplayShowHomeEnabled(false);

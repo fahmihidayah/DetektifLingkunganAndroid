@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.engine.ImageViewHandler;
+import com.engine.DetektivUtilities;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
 import com.models.DataSingleton;
@@ -56,10 +56,10 @@ public class ListPrivateMessageUserFragment extends Fragment implements Observer
 		listViewUsersPrivateMessage = (ListView) rootView.findViewById(R.id.listViewUsersPrivateMessage);
 		listPrivateMessages = DataSingleton.getInstance().getListPrivateMessages();
 		customAdapter = new CustomAdapter<PrivateMessage>(getActivity(), R.layout.private_message_user_item_layout, listPrivateMessages) {
-			ImageViewHandler  imageViewHandler ;
+			DetektivUtilities  imageViewHandler ;
 			@Override
 			public void initialComponent() {
-				imageViewHandler = new ImageViewHandler(getActivity());
+				imageViewHandler = new DetektivUtilities(getActivity());
 				super.initialComponent();
 			}
 			@Override

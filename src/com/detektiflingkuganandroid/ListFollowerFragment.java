@@ -6,7 +6,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.adapter.CustomInjectedAdapter;
-import com.engine.ImageViewHandler;
+import com.engine.DetektivUtilities;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
 import com.framework.rest_clients.MyRestClient;
@@ -51,10 +51,10 @@ public class ListFollowerFragment extends Fragment implements Constantstas {
 		ButterKnife.inject(this, rootView);
 
 		customAdapter = new CustomAdapter<User>(getActivity(), R.layout.user_item_layout, listUser) {
-			ImageViewHandler imageViewHandler;
+			DetektivUtilities imageViewHandler;
 			@Override
 			public void initialComponent() {
-				imageViewHandler = new ImageViewHandler(getContext());
+				imageViewHandler = new DetektivUtilities(getContext());
 				super.initialComponent();
 			}
 			@Override
