@@ -7,13 +7,13 @@ import butterknife.ButterKnife.Finder;
 public class HomeFragment$ViewHolder$$ViewInjector {
   public static void inject(Finder finder, final com.detektiflingkuganandroid.HomeFragment.ViewHolder target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131427352, "method 'onClickImageButtonProfileMenu'");
+    view = finder.findRequiredView(source, 2131427356, "method 'onClickImageButtonSearch'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
         @Override public void doClick(
           android.view.View p0
         ) {
-          target.onClickImageButtonProfileMenu((android.widget.ImageButton) p0);
+          target.onClickImageButtonSearch((android.widget.ImageButton) p0);
         }
       });
     view = finder.findRequiredView(source, 2131427355, "method 'onClickImageButtonPrivateMessage'");
@@ -34,15 +34,6 @@ public class HomeFragment$ViewHolder$$ViewInjector {
           target.onClickImageButtonShot((android.widget.ImageButton) p0);
         }
       });
-    view = finder.findRequiredView(source, 2131427356, "method 'onClickImageButtonSearch'");
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.onClickImageButtonSearch((android.widget.ImageButton) p0);
-        }
-      });
     view = finder.findRequiredView(source, 2131427353, "method 'onClickImageButtonNotif'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
@@ -50,6 +41,15 @@ public class HomeFragment$ViewHolder$$ViewInjector {
           android.view.View p0
         ) {
           target.onClickImageButtonNotif((android.widget.ImageButton) p0);
+        }
+      });
+    view = finder.findRequiredView(source, 2131427352, "method 'onClickImageButtonProfileMenu'");
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.onClickImageButtonProfileMenu((android.widget.ImageButton) p0);
         }
       });
   }

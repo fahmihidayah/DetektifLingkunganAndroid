@@ -7,11 +7,11 @@ import butterknife.ButterKnife.Finder;
 public class LoginActivity$$ViewInjector {
   public static void inject(Finder finder, final com.detektiflingkuganandroid.LoginActivity target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131427366, "field 'editTextUserName'");
-    target.editTextUserName = (android.widget.EditText) view;
-    view = finder.findRequiredView(source, 2131427367, "field 'editTextPassword'");
+    view = finder.findRequiredView(source, 2131427366, "field 'editTextPassword'");
     target.editTextPassword = (android.widget.EditText) view;
-    view = finder.findRequiredView(source, 2131427434, "method 'onClickDaftar'");
+    view = finder.findRequiredView(source, 2131427365, "field 'editTextUserName'");
+    target.editTextUserName = (android.widget.EditText) view;
+    view = finder.findRequiredView(source, 2131427433, "method 'onClickDaftar'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
         @Override public void doClick(
@@ -20,7 +20,7 @@ public class LoginActivity$$ViewInjector {
           target.onClickDaftar(p0);
         }
       });
-    view = finder.findRequiredView(source, 2131427433, "method 'onClickLogin'");
+    view = finder.findRequiredView(source, 2131427432, "method 'onClickLogin'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
         @Override public void doClick(
@@ -32,7 +32,7 @@ public class LoginActivity$$ViewInjector {
   }
 
   public static void reset(com.detektiflingkuganandroid.LoginActivity target) {
-    target.editTextUserName = null;
     target.editTextPassword = null;
+    target.editTextUserName = null;
   }
 }

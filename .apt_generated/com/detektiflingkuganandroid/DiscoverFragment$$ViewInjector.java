@@ -7,7 +7,7 @@ import butterknife.ButterKnife.Finder;
 public class DiscoverFragment$$ViewInjector {
   public static void inject(Finder finder, final com.detektiflingkuganandroid.DiscoverFragment target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131427393, "field 'listViewLaporan'");
+    view = finder.findRequiredView(source, 2131427392, "field 'listViewLaporan'");
     target.listViewLaporan = (android.widget.ListView) view;
   }
 

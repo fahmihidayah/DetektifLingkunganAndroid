@@ -6,6 +6,7 @@ import butterknife.OnClick;
 
 import com.detektiflingkuganandroid.HomeFragment.ViewHolder;
 import com.framework.common_utilities.ViewSetterUtilities;
+import com.loopj.android.http.RequestParams;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,7 +34,7 @@ public class SearchFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_laporan_ku, null);
+		rootView = inflater.inflate(R.layout.search_fragment, null);
 		ButterKnife.inject(this, rootView);
 		initialComponent();
 		return rootView;
@@ -46,10 +47,12 @@ public class SearchFragment extends Fragment{
 			getActivity().onBackPressed();
 		}
 		
-		@OnClick(R.id.imageButtonSetting)
-		public void onClickSetting(View view){
-			Toast.makeText(getActivity(), "show dialog", Toast.LENGTH_LONG).show();
+		@OnClick(R.id.imageButtonSearch)
+		public void onClikcSaerch(View view){
+			RequestParams params = new RequestParams();
+			
 		}
+		
 		
 		public ViewHolder(View view){
 			ButterKnife.inject(this, view);

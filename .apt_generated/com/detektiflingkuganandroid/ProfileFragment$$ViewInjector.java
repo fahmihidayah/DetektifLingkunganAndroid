@@ -7,21 +7,7 @@ import butterknife.ButterKnife.Finder;
 public class ProfileFragment$$ViewInjector {
   public static void inject(Finder finder, final com.detektiflingkuganandroid.ProfileFragment target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131427374, "field 'textViewName'");
-    target.textViewName = (android.widget.TextView) view;
-    view = finder.findRequiredView(source, 2131427390, "field 'buttonFollower' and method 'onClickFollower'");
-    target.buttonFollower = (android.widget.Button) view;
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.onClickFollower(p0);
-        }
-      });
-    view = finder.findRequiredView(source, 2131427392, "field 'gridViewLaporan'");
-    target.gridViewLaporan = (android.widget.GridView) view;
-    view = finder.findRequiredView(source, 2131427391, "field 'buttonFollowing' and method 'onClickFollowing'");
+    view = finder.findRequiredView(source, 2131427390, "field 'buttonFollowing' and method 'onClickFollowing'");
     target.buttonFollowing = (android.widget.Button) view;
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
@@ -31,7 +17,11 @@ public class ProfileFragment$$ViewInjector {
           target.onClickFollowing(p0);
         }
       });
-    view = finder.findRequiredView(source, 2131427389, "field 'imageButtonEditStatus' and method 'onClickEditStatus'");
+    view = finder.findRequiredView(source, 2131427383, "field 'textViewStatus'");
+    target.textViewStatus = (android.widget.TextView) view;
+    view = finder.findRequiredView(source, 2131427373, "field 'textViewName'");
+    target.textViewName = (android.widget.TextView) view;
+    view = finder.findRequiredView(source, 2131427388, "field 'imageButtonEditStatus' and method 'onClickEditStatus'");
     target.imageButtonEditStatus = (android.widget.ImageButton) view;
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
@@ -41,19 +31,7 @@ public class ProfileFragment$$ViewInjector {
           target.onClickEditStatus(p0);
         }
       });
-    view = finder.findRequiredView(source, 2131427373, "field 'imageViewProfile' and method 'onClickImageViewProfile'");
-    target.imageViewProfile = (android.widget.ImageView) view;
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.onClickImageViewProfile(p0);
-        }
-      });
-    view = finder.findRequiredView(source, 2131427384, "field 'textViewStatus'");
-    target.textViewStatus = (android.widget.TextView) view;
-    view = finder.findRequiredView(source, 2131427387, "field 'buttonFollow' and method 'follow'");
+    view = finder.findRequiredView(source, 2131427386, "field 'buttonFollow' and method 'follow'");
     target.buttonFollow = (android.widget.Button) view;
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
@@ -63,16 +41,38 @@ public class ProfileFragment$$ViewInjector {
           target.follow();
         }
       });
+    view = finder.findRequiredView(source, 2131427391, "field 'gridViewLaporan'");
+    target.gridViewLaporan = (android.widget.GridView) view;
+    view = finder.findRequiredView(source, 2131427389, "field 'buttonFollower' and method 'onClickFollower'");
+    target.buttonFollower = (android.widget.Button) view;
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.onClickFollower(p0);
+        }
+      });
+    view = finder.findRequiredView(source, 2131427372, "field 'imageViewProfile' and method 'onClickImageViewProfile'");
+    target.imageViewProfile = (android.widget.ImageView) view;
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.onClickImageViewProfile(p0);
+        }
+      });
   }
 
   public static void reset(com.detektiflingkuganandroid.ProfileFragment target) {
-    target.textViewName = null;
-    target.buttonFollower = null;
-    target.gridViewLaporan = null;
     target.buttonFollowing = null;
-    target.imageButtonEditStatus = null;
-    target.imageViewProfile = null;
     target.textViewStatus = null;
+    target.textViewName = null;
+    target.imageButtonEditStatus = null;
     target.buttonFollow = null;
+    target.gridViewLaporan = null;
+    target.buttonFollower = null;
+    target.imageViewProfile = null;
   }
 }
