@@ -48,9 +48,6 @@ public class MainEngine implements Constantstas {
 		params.put("laporanId", idLaporan);
 		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
 		params.put("type", type);
-//		Toast.makeText(mainActivity, "auth : " + DataSingleton.getInstance().getAuthKey() + "\n"  + 
-//		"idLaporan " + idLaporan + "\ntype : " + type, Toast.LENGTH_LONG).show();
-		Toast.makeText(mainActivity.getActivity(), params.toString(), Toast.LENGTH_LONG).show();
 		MyRestClient.post(API_LIST_LAPORAN, params,
 				new JsonHttpResponseHandler() {
 					@Override

@@ -110,11 +110,11 @@ public class DetailLaporanFragment extends Fragment implements Constantstas {
 	
 	public CustomAdapter<Komentar> customAdapter;
 	public View rootView;
-	public LaporanHelper laporan;
+	public Laporan laporan;
 	private ArrayList<Komentar> listKomentar = new ArrayList<Komentar>();
 
 
-	public DetailLaporanFragment(LaporanHelper laporan) {
+	public DetailLaporanFragment(Laporan laporan) {
 		this.laporan = laporan;
 	}
 

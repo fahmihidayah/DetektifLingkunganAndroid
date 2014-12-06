@@ -7,26 +7,26 @@ import butterknife.ButterKnife.Finder;
 public class LoginActivity$$ViewInjector {
   public static void inject(Finder finder, final com.detektiflingkuganandroid.LoginActivity target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131427364, "field 'editTextUserName'");
+    view = finder.findRequiredView(source, 2131427366, "field 'editTextUserName'");
     target.editTextUserName = (android.widget.EditText) view;
-    view = finder.findRequiredView(source, 2131427365, "field 'editTextPassword'");
+    view = finder.findRequiredView(source, 2131427367, "field 'editTextPassword'");
     target.editTextPassword = (android.widget.EditText) view;
-    view = finder.findRequiredView(source, 2131427430, "method 'onClickLogin'");
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.onClickLogin(p0);
-        }
-      });
-    view = finder.findRequiredView(source, 2131427431, "method 'onClickDaftar'");
+    view = finder.findRequiredView(source, 2131427434, "method 'onClickDaftar'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
         @Override public void doClick(
           android.view.View p0
         ) {
           target.onClickDaftar(p0);
+        }
+      });
+    view = finder.findRequiredView(source, 2131427433, "method 'onClickLogin'");
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.onClickLogin(p0);
         }
       });
   }

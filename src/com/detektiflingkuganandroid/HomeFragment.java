@@ -112,8 +112,8 @@ public class HomeFragment extends Fragment {
 
 		@OnClick(R.id.imageButtonSearch)
 		public void onClickImageButtonSearch(ImageButton button) {
-			Toast.makeText(activity, "not implement yet", Toast.LENGTH_LONG)
-					.show();
+			((HomeActivity) activity).setFragment(
+					new SearchFragment(), true);
 		}
 
 		public ViewHolder(View view, Activity activity) {
