@@ -106,8 +106,8 @@ public class HomeFragment extends Fragment {
 
 		@OnClick(R.id.imageButtonNotif)
 		public void onClickImageButtonNotif(ImageButton button) {
-			Toast.makeText(activity, "not implement yet", Toast.LENGTH_LONG)
-					.show();
+			((HomeActivity) activity).setFragment(
+					new NotificationFragment(), true);
 		}
 
 		@OnClick(R.id.imageButtonSearch)

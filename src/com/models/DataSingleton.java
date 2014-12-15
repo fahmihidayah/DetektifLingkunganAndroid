@@ -15,13 +15,15 @@ import com.orm.query.Select;
 public class DataSingleton extends Observable implements Constantstas{
 	private static DataSingleton instance;
 
-	private String serverAddress = "192.168.1.6:9000";
+	private String serverAddress = "128.199.207.197:9000";
 	//http://128.199.207.197:9000
 	private String authKey = "";
 	private boolean isLogin = false;
 	private User user = null;
 	private List<LaporanHelper> listDataLaporan = new ArrayList<LaporanHelper>();
 	private ArrayList<PrivateMessage> listPrivateMessages = new ArrayList<PrivateMessage>();
+//	private boolean isActive = true;
+	
 	
 	public String getAuthKey() {
 		return authKey;
@@ -98,6 +100,8 @@ public class DataSingleton extends Observable implements Constantstas{
 		} catch (FileNotFoundException e) {
 			
 		} catch (IOException e) {
+			
+		}catch (NullPointerException ex){
 			
 		}
 	}

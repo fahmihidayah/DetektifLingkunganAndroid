@@ -91,4 +91,9 @@ public class HomeActivity extends FragmentActivity implements Constantstas{
 			}
 		});
 	}
+	
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+//		Toast.makeText(this, "data",Toast.LENGTH_LONG).show();
+		super.onActivityResult(arg0, arg1, arg2);
+	};
 }

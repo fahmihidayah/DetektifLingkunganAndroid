@@ -11,7 +11,7 @@
     <string name="laporan">Laporan</string>
     <string-array name="menu_gambar">
         <item >Kamera</item>
-        <item >Ambil Gambar</item>
+        <item >Galery</item>
     </string-array>
     <string-array name="menu_data">
         <item >Gambar</item>

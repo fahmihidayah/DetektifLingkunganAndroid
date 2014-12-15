@@ -1,9 +1,17 @@
 package com.detektiflingkuganandroid;
 
+import java.util.List;
+
+import org.json.JSONObject;
+
 import com.engine.DetektivUtilities;
-import com.engine.MainEngine;
+import com.engine.ProgressDialogFactory;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
+import com.framework.rest_clients.MyRestClient;
+import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.models.Constantstas;
 import com.models.DataSingleton;
 import com.models.Laporan;
@@ -12,6 +20,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.response.LaporanResponse;
+import com.response.ListLaporanResponse;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -26,12 +36,12 @@ import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainFragment extends Fragment implements Constantstas,
 		OnRefreshListener {
 
-	private MainEngine mainEngine;
-
+	private List<LaporanHelper> listLaporan = DataSingleton.getInstance().getListDataLaporan();
 	public View rootView;
 	private static final int SELECT_PICTURE = 1;
 	private static int TAKE_PICTURE = 5;
@@ -46,12 +56,11 @@ public class MainFragment extends Fragment implements Constantstas,
 		mSwipeRefreshLayout = (SwipeRefreshLayout) rootView
 				.findViewById(R.id.swipe_container);
 		mSwipeRefreshLayout.setOnRefreshListener(this);
-		mainEngine = new MainEngine(this);
 
 		listViewLaporan = (ListView) rootView
 				.findViewById(R.id.listViewLaporan);
 		customAdapter = new CustomAdapter<LaporanHelper>(getActivity(),
-				R.layout.laporan_item_layout_1, mainEngine.getListLaporan()) {
+				R.layout.laporan_item_layout_1, listLaporan) {
 
 			DetektivUtilities imageViewHandler;
 
@@ -67,6 +76,7 @@ public class MainFragment extends Fragment implements Constantstas,
 						.findViewById(R.id.imageViewImageLaporan);
 				ImageView imageViewUserProfile = (ImageView) view
 						.findViewById(R.id.imageViewProfile);
+				
 				imageViewUserProfile.setOnClickListener(new View.OnClickListener() {
 					
 					@Override
@@ -120,7 +130,13 @@ public class MainFragment extends Fragment implements Constantstas,
 					imageButtonPantau.setImageResource(R.drawable.ic_pantau);
 				}
 				imageButtonPantau.setOnClickListener(new OnClickPantau(data));
-				
+				imageViewImageLaporan.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						((HomeActivity)getActivity()).setFragment(new ZoomImageFragment(data.getListImagePath().get(0).getUrlImange()), true);
+					}
+				});
 				
 			}
 		};
@@ -147,7 +163,7 @@ public class MainFragment extends Fragment implements Constantstas,
 					// item is fully visible.
 					final int lastItem = firstVisibleItem + visibleItemCount;
 					if (lastItem == totalItemCount) {
-						mainEngine.requestLaporan(OLDEST);
+						requestLaporan(OLDEST);
 						// if(preLast!=lastItem){ //to avoid multiple calls for
 						// last item
 						//
@@ -157,7 +173,7 @@ public class MainFragment extends Fragment implements Constantstas,
 				}
 			}
 		});
-		mainEngine.requestLaporan(FIRST);
+		requestLaporan(FIRST);
 	}
 
 	@Override
@@ -170,7 +186,7 @@ public class MainFragment extends Fragment implements Constantstas,
 
 	@Override
 	public void onRefresh() {
-		mainEngine.requestLaporan(NEWEST);
+		requestLaporan(NEWEST);
 	}
 
 	
@@ -188,11 +204,97 @@ public class MainFragment extends Fragment implements Constantstas,
 		@Override
 		public void onClick(View v) {
 			if(data.isPantau()){
-				mainEngine.pantau(data, API_UNPANTAU);
+				pantau(data, API_UNPANTAU);
 			}
 			else {
-				mainEngine.pantau(data, API_PANTAU);
+				pantau(data, API_PANTAU);
 			}
 		}
+	}
+	
+	public void requestLaporan(final String type) {
+		RequestParams params = new RequestParams();
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		String idLaporan = "";
+		if(!type.equalsIgnoreCase("f")){
+			if(listLaporan.size() > 0){
+				if(type.equalsIgnoreCase("h")){
+					idLaporan = listLaporan.get(0).getIdLaporan() + "";	
+				}else {
+					idLaporan = listLaporan.get(listLaporan.size() - 1).getIdLaporan() + "";
+				}
+				
+			}
+		}
+		params.put("laporanId", idLaporan);
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("type", type);
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+		MyRestClient.post(API_LIST_LAPORAN, params,
+				new JsonHttpResponseHandler() {
+			
+					@Override
+					public void onProgress(int bytesWritten, int totalSize) {
+						dialogFactory.show("Load laporan...", false);
+					}
+					@Override
+					public void onSuccess(JSONObject response) {
+						ListLaporanResponse listLaporanResponse = new Gson().fromJson(response.toString(), ListLaporanResponse.class);
+						if(type.equalsIgnoreCase(FIRST)){
+							listLaporan.clear();
+							listLaporan.addAll(listLaporanResponse.getData());	
+						}
+						else if(type.equalsIgnoreCase(NEWEST)){
+							List<LaporanHelper> listLaporanTemp = listLaporanResponse.getData();
+							int i = 0;
+							for (LaporanHelper laporan : listLaporanTemp) {
+								listLaporan.add(i, laporan);
+								i++;
+							}
+						}
+						
+						Toast.makeText(getActivity(), "Data updated " + listLaporanResponse.getData().size(), Toast.LENGTH_LONG).show();
+						mSwipeRefreshLayout.setRefreshing(false);
+						customAdapter.notifyDataSetChanged();
+						dialogFactory.dismiss();
+					}
+
+					@Override
+					public void onFailure(Throwable e, JSONObject errorResponse) {
+						mSwipeRefreshLayout.setRefreshing(false);
+						Toast.makeText(getActivity(), "Error update data", Toast.LENGTH_LONG).show();
+						dialogFactory.dismiss();
+					}
+				});
+	}
+	
+
+	public void pantau(final Laporan data, String api){
+		RequestParams params = new RequestParams();
+		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("laporanId", data.getIdLaporan() + "");
+		params.put("authKey", DataSingleton.getInstance().getAuthKey());
+		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+		MyRestClient.post(api, params, new JsonHttpResponseHandler(){
+			@Override
+			public void onProgress(int bytesWritten, int totalSize) {
+				dialogFactory.show("Loading", false);
+			}
+			@Override
+			public void onSuccess(JSONObject response) {
+				LaporanResponse laporanResponse = new Gson().fromJson(response.toString(), LaporanResponse.class);
+//				LaporanHelper laporanHelper = listLaporan.get(listLaporan.indexOf(laporanResponse.getData()));
+				data.setPantau(laporanResponse.getData().isPantau());
+				data.setJumlahUserPemantau(laporanResponse.getData().getJumlahUserPemantau());
+				DataSingleton.getInstance().saveToFile(getActivity());
+				customAdapter.notifyDataSetChanged();
+				dialogFactory.dismiss();
+			}
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+				Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
+				dialogFactory.dismiss();
+			}
+		});
 	}
 }

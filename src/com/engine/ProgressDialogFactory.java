@@ -19,6 +19,16 @@ public class ProgressDialogFactory {
 	public void dismiss(){
 		progress.dismiss();
 	}
+
+	public ProgressDialog getProgress() {
+		return progress;
+	}
+
+	public void setProgress(ProgressDialog progress) {
+		this.progress = progress;
+	}
+	
+	
 	
 	
 

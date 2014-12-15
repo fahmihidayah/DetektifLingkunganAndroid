@@ -6,6 +6,7 @@ import java.util.Date;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,22 @@ public class ViewSetterUtilities {
 			Bitmap bitmapImage = BitmapFactory.decodeFile(file.getAbsolutePath());
 			imageView.setImageBitmap(bitmapImage);
 		}
+		return imageView;
+	}
+	
+	public static ImageView setPathToImageView(View rootView, int imageViewResource, String path, BitmapFactory.Options options){
+		File file = new  File(path);
+		ImageView imageView = (ImageView) rootView.findViewById(imageViewResource);
+		if(file.exists()){
+			Bitmap bitmapImage = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+			imageView.setImageBitmap(bitmapImage);
+		}
+		return imageView;
+	}
+	
+	public static ImageView setUriToImageView(View rootView, int imageViewResource, Uri uri){
+		ImageView imageView = (ImageView) rootView.findViewById(imageViewResource);
+		imageView.setImageURI(uri);
 		return imageView;
 	}
 	

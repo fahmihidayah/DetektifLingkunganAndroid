@@ -8,22 +8,26 @@ import com.orm.SugarRecord;
 
 import android.text.style.SuggestionSpan;
 /*
-"user": {
-      "id": 1,
-      "type": "PEMANTAU",
-      "name": "fahmi",
-      "email": "fahmi@rembugan.com",
-      "status": "Alhamdulillah",
-      "jumlahFollowerUser": 0,
-      "jumlahFollowingUser": 0,
-      "imageProfilePath": {
-        "id": 1,
-        "fileName": "6d249051_db1c_4704_8d78_d741ac02954a",
-        "keterangan": "default profile",
-        "urlImange": "http://192.168.1.5/uploads/6d249051_db1c_4704_8d78_d741ac02954a"
-      },
-      "isFollowing": false
-    }
+{
+  "status": "200",
+  "message": "success",
+  "data": {
+    "idUser": 2,
+    "type": "PEMANTAU",
+    "name": "adi",
+    "email": "adi@rembugan.com",
+    "status": "i'm a detective",
+    "jumlahFollowedUser": 0,
+    "jumlahFollowingUser": 1,
+    "imageProfilePath": {
+      "idImagePath": 1,
+      "fileName": "030369c6_f0de_4c38_885e_0df1f76ded5c",
+      "keterangan": "default profile",
+      "urlImange": "http://192.168.1.6/uploads/030369c6_f0de_4c38_885e_0df1f76ded5c"
+    },
+    "isFollowing": true
+  }
+}
  */
 public class User /*extends SugarRecord<User>*/ implements Serializable{
 	public  Long idUser;
@@ -31,7 +35,7 @@ public class User /*extends SugarRecord<User>*/ implements Serializable{
 	public String name;
 	public String email;
 	public String status;
-	public Integer jumlahFollowerUser = 0;
+	public Integer jumlahFollowedUser = 0;
 	public Integer jumlahFollowingUser = 0;
 	public Boolean isFollowing;
 	public ImagePath imageProfilePath;
@@ -71,11 +75,11 @@ public class User /*extends SugarRecord<User>*/ implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Integer getJumlahFollowerUser() {
-		return jumlahFollowerUser;
+	public Integer getJumlahFollowedUser() {
+		return jumlahFollowedUser;
 	}
-	public void setJumlahFollowerUser(Integer jumlahFollowerUser) {
-		this.jumlahFollowerUser = jumlahFollowerUser;
+	public void setJumlahFollowedUser(Integer jumlahFollowedUser) {
+		this.jumlahFollowedUser = jumlahFollowedUser;
 	}
 	public Integer getJumlahFollowingUser() {
 		return jumlahFollowingUser;

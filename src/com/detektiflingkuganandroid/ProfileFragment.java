@@ -1,7 +1,10 @@
 package com.detektiflingkuganandroid;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -14,6 +17,7 @@ import com.engine.DetektivUtilities;
 import com.engine.ProgressDialogFactory;
 import com.framework.adapter.CustomAdapter;
 import com.framework.common_utilities.ViewSetterUtilities;
+import com.framework.image_handler.CropImageHandler;
 import com.framework.rest_clients.MyRestClient;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -28,12 +32,16 @@ import com.response.ListLaporanResponse;
 import com.response.UserResponse;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -54,9 +62,7 @@ import android.widget.Toast;
 public class ProfileFragment extends Fragment implements Constantstas {
 
 
-	private static int TAKE_PICTURE = 0;
-	private static int SELECT_PICTURE = 1;
-
+	CropImageHandler cropImageHandler;
 	private Long userId;
 	public View rootView;
 	@InjectView(R.id.buttonFollower) Button buttonFollower;
@@ -79,7 +85,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 		
 		RequestParams params = new RequestParams();
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
-		params.put("userId", DataSingleton.getInstance().getUser().getIdUser() + "");
+		params.put("followingUserId", DataSingleton.getInstance().getUser().getIdUser() + "");
 		params.put("followedUserId", user.getIdUser() + "");
 		
 		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
@@ -92,17 +98,17 @@ public class ProfileFragment extends Fragment implements Constantstas {
 			
 			@Override
 			public void onSuccess(JSONObject response) {
+				UserResponse userResponse = new Gson().fromJson(response.toString(), UserResponse.class);
+				user = userResponse.getData();
+				textViewStatus.setText(user.getStatus());
+				textViewName.setText(user.getName());
+				buttonFollower.setText( user.getJumlahFollowingUser() + "\nFollower" );
+				buttonFollowing.setText(user.getJumlahFollowedUser() + "\nFollowing");
 				if(user.getIsFollowing()){
-					buttonFollow.setText("Follow me");
-					user.setJumlahFollowerUser(user.getJumlahFollowerUser()-1);
-					buttonFollower.setText(user.getJumlahFollowerUser()+ "\nFollower");
-					user.setIsFollowing(false);
+					buttonFollow.setText("Unfollow me");
 				}
 				else {
-					user.setJumlahFollowerUser(user.getJumlahFollowerUser()+1);
-					buttonFollower.setText(user.getJumlahFollowerUser() + "\nFollower");
-					buttonFollow.setText("Unfollow me");
-					user.setIsFollowing(true);
+					buttonFollow.setText("Follow me");
 				}
 				dialogFactory.dismiss();
 			}
@@ -115,14 +121,60 @@ public class ProfileFragment extends Fragment implements Constantstas {
 		});
 	}
 	
+	
+
+	public void getUserDetail(){
+		
+		RequestParams params = new RequestParams();
+			params.put("authKey", DataSingleton.getInstance().getAuthKey());
+			params.put("userId",user.getIdUser()+"");
+			params.put("followingUserId", DataSingleton.getInstance().getUser().getIdUser() + "");
+			
+			final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
+			
+			MyRestClient.post(API_USER_DETAIL, params, new JsonHttpResponseHandler(){
+				
+				@Override
+				public void onProgress(int bytesWritten, int totalSize) {
+					dialogFactory.show("Load user detail...",false);
+				}
+				
+				@Override
+				public void onSuccess(JSONObject response) {
+					
+					UserResponse userResponse = new Gson().fromJson(response.toString(), UserResponse.class);
+					user = userResponse.getData();
+					textViewStatus.setText(user.getStatus());
+					textViewName.setText(user.getName());
+					imageViewHandler.getImageLoader().displayImage(user.getImageProfilePath().getUrlImange(), 
+							imageViewProfile, imageViewHandler.getDisplayImageOptionsProfile());
+					buttonFollower.setText( user.getJumlahFollowingUser() + "\nFollower" );
+					buttonFollowing.setText(user.getJumlahFollowedUser() + "\nFollowing");
+					if(user.getIsFollowing()){
+						buttonFollow.setText("Unfollow me");
+						
+					}
+					else {
+						buttonFollow.setText("Follow me");
+					}
+					dialogFactory.dismiss();
+				}
+				
+				@Override
+				public void onFailure(Throwable e, JSONObject errorResponse) {
+					dialogFactory.dismiss();
+				}
+			});
+	}
+	
 	@OnClick(R.id.buttonFollowing)
 	public void onClickFollowing(View v) {
-		((HomeActivity) getActivity()).setFragment(new ListUserFragment(MODE_FOLLOWING,  user), true);
+		((HomeActivity) getActivity()).setFragment(new ListUserFragment(MODE_FOLLOWER ,  user), true);
 	}
 	
 	@OnClick(R.id.buttonFollower)
 	public void onClickFollower(View v) {
-		((HomeActivity) getActivity()).setFragment(new ListUserFragment(MODE_FOLLOWER, user), true);
+		((HomeActivity) getActivity()).setFragment(new ListUserFragment(MODE_FOLLOWING, user), true);
 	}
 	
 	@OnClick(R.id.imageButtonEditStatus)
@@ -153,6 +205,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 	}
 
 	private void initialComponent() {
+		cropImageHandler = new CropImageHandler(this);
 //		detailUserProfileEngine = new DetailUserProfileEngine(this, userId);
 		user.idUser = userId;
 		if(DataSingleton.getInstance().getUser().getIdUser().equals(userId)){
@@ -277,27 +330,27 @@ public class ProfileFragment extends Fragment implements Constantstas {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		// // Intent intent = new Intent(getActivity(),
-		// // UserProfilePictureActivity.class);
-		// Toast.makeText(getActivity(), "req code " + requestCode,
-		// Toast.LENGTH_LONG).show();
-		// // if (requestCode == SELECT_PICTURE && null != data) {
-		if (data != null) {
-			Bundle extras = data.getExtras();
-
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
-			YesNoDialog yesNoDialog = new YesNoDialog(picturePath);
-			yesNoDialog.show(getFragmentManager(), "yes_no");
+		
+//		Toast.makeText(getActivity(), "request code " + requestCode + " result code " + resultCode, Toast.LENGTH_LONG).show();
+		if(requestCode == CropImageHandler.GALERY_IMAGE_ACTIVITY_REQUEST_CODE){
+			if(resultCode == Activity.RESULT_OK){
+				cropImageHandler.setUriFromIntentResult(data);
+				cropImageHandler.showCrop();	
+			}
 		}
+		if(requestCode == CropImageHandler.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE){
+			if(resultCode == Activity.RESULT_OK){
+				cropImageHandler.showCrop();
+			}
+		}
+		if(requestCode == CropImageHandler.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+			if(resultCode == Activity.RESULT_OK){
+				YesNoDialog yesNoDialog = new YesNoDialog();
+				yesNoDialog.show(getFragmentManager(), "yes_no");
+			}
+			
+		}
+//		super.onActivityResult(requestCode, resultCode, data);
 
 	}
 
@@ -310,28 +363,10 @@ public class ProfileFragment extends Fragment implements Constantstas {
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
 							case 0:
-								Intent intent = new Intent(
-										MediaStore.ACTION_IMAGE_CAPTURE);
-
-								// start camera activity
-								ProfileFragment.this.startActivityForResult(
-										intent, TAKE_PICTURE);
+								cropImageHandler.showCamera();
 								break;
 							case 1:
-								// Intent intent = new Intent();
-								// intent.setType("image/*");
-								// intent.setAction(Intent.ACTION_GET_CONTENT);
-								// startActivityForResult(Intent.createChooser(intent,
-								// "Select Picture"), SELECT_PICTURE);
-								Intent i = new Intent(
-										Intent.ACTION_PICK,
-										android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-								// getActivity().startActivityFromFragment(ProfileFragment.this,
-								// i, SELECT_PICTURE);
-								ProfileFragment.this.startActivityForResult(i,
-										SELECT_PICTURE);
-								break;
-							case 2:
+								cropImageHandler.showGalery();
 								break;
 							default:
 								break;
@@ -344,13 +379,7 @@ public class ProfileFragment extends Fragment implements Constantstas {
 	}
 
 	public class YesNoDialog extends DialogFragment {
-		private String imagePath;
 		
-		public YesNoDialog(String imagePath) {
-			super();
-			this.imagePath = imagePath;
-		}
-
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -360,7 +389,8 @@ public class ProfileFragment extends Fragment implements Constantstas {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					changeUserImageProfile(imagePath);
+					changeUserImageProfile(cropImageHandler.getFileUri());
+					cropImageHandler = new CropImageHandler(getActivity());
 				}
 			});
 			builder.setNegativeButton("No", new OnClickListener() {
@@ -376,60 +406,20 @@ public class ProfileFragment extends Fragment implements Constantstas {
 	}
 	
 
-	public void getUserDetail(){
-		
-		RequestParams params = new RequestParams();
-			params.put("authKey", DataSingleton.getInstance().getAuthKey());
-			params.put("userId",user.getIdUser()+"");
-			params.put("followerUserId", DataSingleton.getInstance().getUser().getIdUser() + "");
-			
-			final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
-			
-			MyRestClient.post(API_USER_DETAIL, params, new JsonHttpResponseHandler(){
-				
-				@Override
-				public void onProgress(int bytesWritten, int totalSize) {
-					dialogFactory.show("Load user detail...",false);
-				}
-				
-				@Override
-				public void onSuccess(JSONObject response) {
-					
-					UserResponse userResponse = new Gson().fromJson(response.toString(), UserResponse.class);
-					user = userResponse.getData();
-					textViewStatus.setText(user.getStatus());
-					textViewName.setText(user.getName());
-					imageViewHandler.getImageLoader().displayImage(user.getImageProfilePath().getUrlImange(), 
-							imageViewProfile, imageViewHandler.getDisplayImageOptionsProfile());
-					buttonFollower.setText(user.getJumlahFollowerUser() + "\nFollower");
-					buttonFollowing.setText(user.getJumlahFollowingUser() + "\nFollowing");
-					if(!user.getIsFollowing()){
-						buttonFollow.setText("Follow me");
-					}
-					else {
-						buttonFollow.setText("Unfollow me");
-					}
-					dialogFactory.dismiss();
-				}
-				
-				@Override
-				public void onFailure(Throwable e, JSONObject errorResponse) {
-					dialogFactory.dismiss();
-				}
-			});
-	}
 	
-	public void changeUserImageProfile(final String imagePath){
+	public void changeUserImageProfile(Uri imagePath){
 		RequestParams params = new RequestParams();
 		params.put("userId", user.getIdUser() + "");
 		params.put("authKey", DataSingleton.getInstance().getAuthKey());
-		Toast.makeText(getActivity(), params.toString(), 1000).show();
-		File imageFile = new File(imagePath);
+		
 		final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
-		if(imageFile.exists()){
 			try {
-				params.put("picture", imageFile);
-				
+				Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imagePath));
+				ByteArrayOutputStream  arrayOutputStream = new ByteArrayOutputStream();
+				bitmap.compress(CompressFormat.JPEG, 100, arrayOutputStream);		
+				byte [] bmdata = arrayOutputStream.toByteArray();
+				InputStream is = new  ByteArrayInputStream(bmdata);
+				params.put("picture", is);
 				MyRestClient.post(API_CHANGE_USER_PROF_PICT, params, new JsonHttpResponseHandler(){
 					
 					@Override
@@ -458,7 +448,6 @@ public class ProfileFragment extends Fragment implements Constantstas {
 			}
 			
 			
-		}
 	}
 	public void requestListLaporan(){
 		RequestParams params = new RequestParams();

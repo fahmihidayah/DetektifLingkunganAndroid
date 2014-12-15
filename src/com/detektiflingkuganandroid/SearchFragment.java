@@ -21,6 +21,7 @@ import com.response.ListUserResponse;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class SearchFragment extends Fragment implements Constantstas{
 		getActivity().getActionBar().setCustomView(customActionBar);
 		ViewHolder viewHolder = new ViewHolder(customActionBar);
 		customActionBar.setTag(viewHolder);
-		
+		onClickLaporan(null);
 	}
 	
 	@Override
@@ -90,6 +91,7 @@ public class SearchFragment extends Fragment implements Constantstas{
 			RequestParams params = new RequestParams();
 			params.put("key_word", editTextSearch.getText().toString());
 			params.put("type", type);
+			params.put("userId",DataSingleton.getInstance().getUser().getIdUser() + "");
 			params.put("authKey", DataSingleton.getInstance().getAuthKey());
 			final ProgressDialogFactory dialogFactory = new ProgressDialogFactory(getActivity());
 			dialogFactory.show("Loading...", false);
@@ -104,10 +106,12 @@ public class SearchFragment extends Fragment implements Constantstas{
 					if(type.equalsIgnoreCase("laporan")){
 						ListLaporanResponse listLaporanResponse = new Gson().fromJson(response.toString(), ListLaporanResponse.class);
 						Toast.makeText(getActivity(), "laporan", Toast.LENGTH_LONG).show();
+						setFragment(new ResultSearchFragment(listLaporanResponse.getData(), "laporan"));
 					}
 					else {
 						ListUserResponse listUserResponse = new Gson().fromJson(response.toString(), ListUserResponse.class);
 						Toast.makeText(getActivity(), "user", Toast.LENGTH_LONG).show();
+						setFragment(new ResultSearchFragment(listUserResponse.getData(), "user"));
 					}
 					dialogFactory.dismiss();
 				}
@@ -124,6 +128,12 @@ public class SearchFragment extends Fragment implements Constantstas{
 		public ViewHolder(View view){
 			ButterKnife.inject(this, view);
 		}
+	}
+	
+	public void setFragment(Fragment fragment) {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.frameLayoutSearchResult, fragment);
+		transaction.commit();
 	}
 
 }

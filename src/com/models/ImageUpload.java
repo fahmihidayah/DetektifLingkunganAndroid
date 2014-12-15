@@ -1,10 +1,11 @@
 package com.models;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 public class ImageUpload {
 	private int resource;
-	private String path;
+	private Uri uri;
 	private boolean addImage;
 
 	public int getResource() {
@@ -14,15 +15,7 @@ public class ImageUpload {
 	public void setResource(int resource) {
 		this.resource = resource;
 	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
+	
 	public boolean isAddImage() {
 		return addImage;
 	}
@@ -31,4 +24,10 @@ public class ImageUpload {
 		this.addImage = addImage;
 	}
 
+	public Uri getUri() {
+		return uri;
+	}
+	public void setUri(Uri uri) {
+		this.uri = uri;
+	}
 }

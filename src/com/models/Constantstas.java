@@ -49,6 +49,7 @@ public interface Constantstas {
 	public static String API_UPDATE_GCM_ID = "update_gcm_id";
 	public static String API_SEND_MESSAGE = "send_message";
 	public static String API_FIND = "find";
+	public static String API_GET_LIST_NOTIFICATION = "get_list_notification";
 	
 	public static String STATUS_PENDING = "PENDING";
 	public static String STATUS_DELIVER = "DELIVER";

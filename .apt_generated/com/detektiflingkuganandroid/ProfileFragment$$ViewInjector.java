@@ -17,8 +17,30 @@ public class ProfileFragment$$ViewInjector {
           target.onClickFollowing(p0);
         }
       });
+    view = finder.findRequiredView(source, 2131427372, "field 'imageViewProfile' and method 'onClickImageViewProfile'");
+    target.imageViewProfile = (android.widget.ImageView) view;
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.onClickImageViewProfile(p0);
+        }
+      });
+    view = finder.findRequiredView(source, 2131427391, "field 'gridViewLaporan'");
+    target.gridViewLaporan = (android.widget.GridView) view;
     view = finder.findRequiredView(source, 2131427383, "field 'textViewStatus'");
     target.textViewStatus = (android.widget.TextView) view;
+    view = finder.findRequiredView(source, 2131427386, "field 'buttonFollow' and method 'follow'");
+    target.buttonFollow = (android.widget.Button) view;
+    view.setOnClickListener(
+      new butterknife.internal.DebouncingOnClickListener() {
+        @Override public void doClick(
+          android.view.View p0
+        ) {
+          target.follow();
+        }
+      });
     view = finder.findRequiredView(source, 2131427373, "field 'textViewName'");
     target.textViewName = (android.widget.TextView) view;
     view = finder.findRequiredView(source, 2131427388, "field 'imageButtonEditStatus' and method 'onClickEditStatus'");
@@ -31,18 +53,6 @@ public class ProfileFragment$$ViewInjector {
           target.onClickEditStatus(p0);
         }
       });
-    view = finder.findRequiredView(source, 2131427386, "field 'buttonFollow' and method 'follow'");
-    target.buttonFollow = (android.widget.Button) view;
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.follow();
-        }
-      });
-    view = finder.findRequiredView(source, 2131427391, "field 'gridViewLaporan'");
-    target.gridViewLaporan = (android.widget.GridView) view;
     view = finder.findRequiredView(source, 2131427389, "field 'buttonFollower' and method 'onClickFollower'");
     target.buttonFollower = (android.widget.Button) view;
     view.setOnClickListener(
@@ -53,26 +63,16 @@ public class ProfileFragment$$ViewInjector {
           target.onClickFollower(p0);
         }
       });
-    view = finder.findRequiredView(source, 2131427372, "field 'imageViewProfile' and method 'onClickImageViewProfile'");
-    target.imageViewProfile = (android.widget.ImageView) view;
-    view.setOnClickListener(
-      new butterknife.internal.DebouncingOnClickListener() {
-        @Override public void doClick(
-          android.view.View p0
-        ) {
-          target.onClickImageViewProfile(p0);
-        }
-      });
   }
 
   public static void reset(com.detektiflingkuganandroid.ProfileFragment target) {
     target.buttonFollowing = null;
+    target.imageViewProfile = null;
+    target.gridViewLaporan = null;
     target.textViewStatus = null;
+    target.buttonFollow = null;
     target.textViewName = null;
     target.imageButtonEditStatus = null;
-    target.buttonFollow = null;
-    target.gridViewLaporan = null;
     target.buttonFollower = null;
-    target.imageViewProfile = null;
   }
 }

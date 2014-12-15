@@ -41,7 +41,14 @@ public class ListUserFragment extends Fragment implements Constantstas{
         getActivity().getActionBar().setDisplayShowCustomEnabled(true);
         getActivity().getActionBar().setCustomView(customActionBar);
         ViewSetterUtilities.setTextToView(customActionBar, R.id.textViewActionBarTitle, (mode.equalsIgnoreCase(MODE_FOLLOWER) ? "Follower": "Following" ));
-        
+        ViewSetterUtilities.getImageView(customActionBar, R.id.imageButtonBack)
+		.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				getActivity().onBackPressed();
+			}
+		});
 		listViewUser = (ListView) rootView.findViewById(R.id.listViewUser);
 		customAdapter = new CustomAdapter<User>(getActivity(),R.layout.user_item_layout, listUserEngine.getListUser()) {
 			DetektivUtilities imageViewHandler;

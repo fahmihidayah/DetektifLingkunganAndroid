@@ -26,10 +26,10 @@
         <GridView
             android:id="@+id/gridViewImageLaporan"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="250dp"
             android:background="@color/white"
             android:layout_marginTop="10dp"
-            android:numColumns="3" >
+            android:numColumns="2" >
         </GridView>
 
         <ImageView
